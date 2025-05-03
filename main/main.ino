@@ -99,8 +99,8 @@ void focalCheck(int delayTime) {
     const byte HALL_PINS[] = { A0, A1, A2, A3, A4 }; 
     const int NUM_PINS = 5;
 
-    const int BASE_READINGS[] = { 497, 522, 507, 502, 523 };
-    const float THRESHOLDS[] = { 3.0, 2.5, 3.0, 3.0, 2.5 };             
+    const int BASE_READINGS[] = { 495, 522, 505, 502, 523 };
+    const float THRESHOLDS[] = { 3.0, 3.0, 4.0, 3.0, 3.0 };             
 
 
     float highestVal = 0;
