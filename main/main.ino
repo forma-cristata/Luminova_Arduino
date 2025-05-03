@@ -14,7 +14,20 @@ WiFiServer server(80);
 const char ssid[] = "friskyfishes";
 const char pass[] = "allthatjazz";
 
+CRGB leds[NUM_LEDS];
 
+int startupFocal = -1;
+bool startupShelfOn = true;
+// TODO, set these to start up rainbow
+int startupDelayTime = 0;
+int startupWhiteValues[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int startupBrightnessValues[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int startupEffectNumber = 0;
+String startupColors[] = { "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",
+"#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000" };
+
+int focal = -1;
+bool shelfOn = false;
 int delayTime = 0;
 int whiteValues[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int brightnessValues[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -27,42 +40,425 @@ int status = WL_IDLE_STATUS;
 void connectToWifi();
 void handleWebServer();
 void processJsonConfig(const String& jsonString);
+void currentSettingPrint();
+void ledSetup();
+void setLed(int L, String hex, int W, int Brightness);
+void selectEffect(int effectNumber);
+void StuckInABlender();
+void Smolder();
 
 void setup() {
 	Serial.begin(9600);
 	while (!Serial) { delay(100); }
-
 	connectToWifi();
-
-    //lightapp.setup -> ledcontroller.begin()
+	ledSetup();
 }
 
 void loop() {
 	handleWebServer();
-	Serial.println("EffectNumber: " + String(effectNumber));
-	Serial.println("DelayTime: " + String(delayTime));
-	Serial.println("WhiteValues: ");
-	for (int i = 0; i < LIGHT_COUNT; i++) {
-		Serial.print(whiteValues[i]);
-		Serial.print(" ");
-	}
-	Serial.println();
-	Serial.println("BrightnessValues: ");
-	for (int i = 0; i < LIGHT_COUNT; i++) {
-		Serial.print(brightnessValues[i]);
-		Serial.print(" ");
-	}
-	Serial.println();
-	Serial.println("Colors: ");
-	for (int i = 0; i < LIGHT_COUNT; i++) {
-		Serial.print(colors[i]);
-		Serial.print(" ");
-	}
-	Serial.println();
+    currentSettingPrint();
+
+    if (!shelfOn) {
+        // Set all of colors to black
+		for (int i = 0; i < LIGHT_COUNT; i++) {
+			setLed(i, "#000000", 0, 0);
+		}
+    }
+    else {
+        // TODO: Check focal point
+    // magsensor.check()
+    // magsensor.getFocalPoint()
+        selectEffect(effectNumber);
+    }
 
 }
 
+void Smolder() {
+    if (focal == -1) {
+        delay(delayTime);
+
+        for (int xy = 0; xy < COLOR_COUNT; xy++) {
+            for (int j = 0; j < 18; j += 2) {
+                setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                int f = 0;
+                if (j == 8) {
+                    f = (xy + 1) % COLOR_COUNT;
+                    setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                }
+                if (j == 12) {
+                    f = (xy + 2) % COLOR_COUNT;
+                    setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                }
+                f = (xy + 3) % COLOR_COUNT;
+                setLed(j + 1, colors[f], whiteValues[f], brightnessValues[f]);
+            }
+
+            for (int j = 1; j < LIGHT_COUNT + 3; j += 2) {
+                setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                int f = (xy + 3) % COLOR_COUNT;
+                setLed(j - 1, colors[f], whiteValues[f], brightnessValues[f]);
+            }
+        }
+    }
+    else {
+        delay(delayTime);
+        for (int xy = 0; xy < COLOR_COUNT; xy++) {
+            int f = 0;
+
+            for (int j = focal; j < LIGHT_COUNT; j += 2) {
+                setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                if (j == 8) {
+                    f = (xy + 1) % COLOR_COUNT;
+					setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                }
+
+                if (j == 12) {
+                    f = (xy + 2) % COLOR_COUNT;
+					setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                }
+                f = (xy + 3) % COLOR_COUNT;
+                int led = (j + 1) % LIGHT_COUNT;
+				setLed(led, colors[f], whiteValues[f], brightnessValues[f]);
+            }
+
+            for (int j = focal; j >= 0; j -= 2) {
+				setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                if (j == 8) {
+                    f = (xy + 1) % COLOR_COUNT;
+					setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                }
+                if (j == 12) {
+                    f = (xy + 2) % COLOR_COUNT;
+					setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                }
+                int led = (j + 1) % LIGHT_COUNT;
+                f = (xy + 3) % COLOR_COUNT;
+				setLed(led, colors[f], whiteValues[f], brightnessValues[f]);
+            }
+
+            for (int j = focal; j < LIGHT_COUNT + 1; j += 2) {
+				setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                f = (xy + 3) % COLOR_COUNT;
+				setLed(j - 1, colors[f], whiteValues[f], brightnessValues[f]);
+            }
+
+            for (int j = focal; j >= 0; j -= 2) {
+				setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+				f = (xy + 3) % COLOR_COUNT;
+				setLed(j - 1, colors[f], whiteValues[f], brightnessValues[f]);
+            }
+        }
+        
+    }
+}
+
+void StuckInABlender() {
+    unsigned long currentTime = millis();
+	int colorOffset = (currentTime / 100) % COLOR_COUNT;
+
+    if (focal == -1) {
+		for (int i = 0; i < LIGHT_COUNT; i++) {
+            int colorIndex = (i + colorOffset) % COLOR_COUNT;
+			setLed(i, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
+            delay(delayTime);
+
+		}
+    }
+    else {
+		for (int i = 0; i < LIGHT_COUNT/2; i++) {
+			int led1 = focal - i;
+			int led2 = focal + i;
+
+			if (led1 < 0) led1 = LIGHT_COUNT + led1;
+			if (led2 >= LIGHT_COUNT) led2 = led2 - LIGHT_COUNT;
+
+			int colorIndex = (i + colorOffset) % COLOR_COUNT;
+			setLed(led1, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
+			setLed(led2, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
+			delay(delayTime);
+		}
+    }
+
+}
+
+void selectEffect(int effectNumber) {
+    switch (effectNumber) {
+    case 0: 
+		StuckInABlender(); // BLENDER originally
+        break;
+    case 1: 
+        Smolder(); // CHRISTMAS originally
+		break;
+    case 2:
+        // The Piano Man / Comfort Song
+		break;
+    case 3: 
+        // Funky / ??
+        break;
+    case 4: 
+        // Mold / ??
+		break;
+    case 5:
+        // Progressive / Iterative
+		break;
+	case 6:
+		// Still
+		break;
+	case 7:
+        // Iterative Strobe / Strobe Change
+		break;
+	case 8:
+		// Techno
+        break;
+	case 9:
+        // Iterative Tracer / Trace Many / ?
+        break;
+    case 10:
+        // Snake / TraceOne
+        break;
+    case 11:
+        // State of Trance
+		break;
+    default: 
+		// Invalid effect number
+		Serial.println("Invalid effect number");
+		break;
+    }
+}
+
+
+void setLed(int L, String hex, int W, int Brightness) {
+    // hex to rgb
+	int R = (int)strtol(hex.substring(1, 3).c_str(), nullptr, 16);
+	int G = (int)strtol(hex.substring(3, 5).c_str(), nullptr, 16);
+	int B = (int)strtol(hex.substring(5, 7).c_str(), nullptr, 16);
+
+    // Configure brightness 
+    R = (R * Brightness) / 255;
+    G = (G * Brightness) / 255;
+    B = (B * Brightness) / 255;
+    W = (W * Brightness) / 255;
+
+    // Set LED to color passed in.
+    switch ((L + 1) % 3) {
+    case 1:
+        switch (L + 1) {
+        case 1:
+            leds[0].r = R;
+            FastLED.show();
+            leds[0].g = G;
+            FastLED.show();
+            leds[0].b = B;
+            FastLED.show();
+            leds[1].g = W;
+            FastLED.show();
+            break;
+        case 4:
+            leds[4].r = R;
+            FastLED.show();
+            leds[4].g = G;
+            FastLED.show();
+            leds[4].b = B;
+            FastLED.show();
+            leds[5].g = W;
+            FastLED.show();
+            break;
+        case 7:
+            leds[8].r = R;
+            FastLED.show();
+            leds[8].g = G;
+            FastLED.show();
+            leds[8].b = B;
+            FastLED.show();
+            leds[9].g = W;
+            FastLED.show();
+            break;
+        case 10:
+            leds[12].r = R;
+            FastLED.show();
+            leds[12].g = G;
+            FastLED.show();
+            leds[12].b = B;
+            FastLED.show();
+            leds[13].g = W;
+            FastLED.show();
+            break;
+        case 13:
+            leds[16].r = R;
+            FastLED.show();
+            leds[16].g = G;
+            FastLED.show();
+            leds[16].b = B;
+            FastLED.show();
+            leds[17].g = W;
+            FastLED.show();
+            break;
+        case 16:
+            leds[20].r = R;
+            FastLED.show();
+            leds[20].g = G;
+            FastLED.show();
+            leds[20].b = B;
+            FastLED.show();
+            leds[21].g = W;
+            FastLED.show();
+            break;
+        }
+        break;
+    case 2:
+        switch (L + 1) {
+        case 2:
+            leds[1].r = G;
+            FastLED.show();
+            leds[1].b = R;
+            FastLED.show();
+            leds[2].r = W;
+            FastLED.show();
+            leds[2].g = B;
+            FastLED.show();
+            break;
+        case 5:
+            leds[5].b = R;
+            FastLED.show();
+            leds[5].r = G;
+            FastLED.show();
+            leds[6].g = B;
+            FastLED.show();
+            leds[6].r = W;
+            FastLED.show();
+            break;
+        case 8:
+            leds[9].r = G;
+            FastLED.show();
+            leds[9].b = R;
+            FastLED.show();
+            leds[10].r = W;
+            FastLED.show();
+            leds[10].g = B;
+            FastLED.show();
+            break;
+        case 11:
+            leds[13].r = G;
+            FastLED.show();
+            leds[13].b = R;
+            FastLED.show();
+            leds[14].r = W;
+            FastLED.show();
+            leds[14].g = B;
+            FastLED.show();
+            break;
+        case 14:
+            leds[17].b = R;
+            FastLED.show();
+            leds[17].r = G;
+            FastLED.show();
+            leds[18].g = B;
+            FastLED.show();
+            leds[18].r = W;
+            FastLED.show();
+            break;
+        }
+        break;
+    case 0:
+        switch (L + 1) {
+        case 3:
+            leds[3].r = B;
+            FastLED.show();
+            leds[3].g = R;
+            FastLED.show();
+            leds[3].b = W;
+            FastLED.show();
+            leds[2].b = G;
+            FastLED.show();
+            break;
+        case 6:
+            leds[7].r = B;
+            FastLED.show();
+            leds[7].g = R;
+            FastLED.show();
+            leds[7].b = W;
+            FastLED.show();
+            leds[6].b = G;
+            FastLED.show();
+            break;
+        case 9:
+            leds[11].g = R;
+            FastLED.show();
+            leds[10].b = G;
+            FastLED.show();
+            leds[11].r = B;
+            FastLED.show();
+            leds[11].b = W;
+            FastLED.show();
+            break;
+        case 12:
+            leds[15].r = B;
+            FastLED.show();
+            leds[15].g = R;
+            FastLED.show();
+            leds[15].b = W;
+            FastLED.show();
+            leds[14].b = G;
+            FastLED.show();
+            break;
+        case 15:
+            leds[19].r = B;
+            FastLED.show();
+            leds[19].g = R;
+            FastLED.show();
+            leds[19].b = W;
+            FastLED.show();
+            leds[18].b = G;
+            FastLED.show();
+            break;
+        }
+        break;
+    }
+	
+}
+
 void ledSetup() {
+	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+
+    // Set master values to startup settings
+	shelfOn = startupShelfOn;
+	focal = startupFocal;
+	delayTime = startupDelayTime;
+    effectNumber = startupEffectNumber;
+	for (int i = 0; i < LIGHT_COUNT; i++) {
+		whiteValues[i] = startupWhiteValues[i];
+		brightnessValues[i] = startupBrightnessValues[i];
+		colors[i] = startupColors[i];
+	}
+}
+
+void currentSettingPrint() {
+	if (!shelfOn) {
+		Serial.println("Shelf is OFF");
+	}
+    else {
+		Serial.println("Focal Point: " + String(focal));
+        Serial.println("EffectNumber: " + String(effectNumber));
+        Serial.println("DelayTime: " + String(delayTime));
+        Serial.println("WhiteValues: ");
+        for (int i = 0; i < LIGHT_COUNT; i++) {
+            Serial.print(whiteValues[i]);
+            Serial.print(" ");
+        }
+        Serial.println();
+        Serial.println("BrightnessValues: ");
+        for (int i = 0; i < LIGHT_COUNT; i++) {
+            Serial.print(brightnessValues[i]);
+            Serial.print(" ");
+        }
+        Serial.println();
+        Serial.println("Colors: ");
+        for (int i = 0; i < LIGHT_COUNT; i++) {
+            Serial.print(colors[i]);
+            Serial.print(" ");
+        }
+        Serial.println();
+    }
 }
 
 void handleWebServer() {
@@ -178,12 +574,15 @@ void handleWebServer() {
             if (requestHeader.indexOf("GET /api/led/on") != -1) {
                 client.println("{\"status\":\"LED ON\"}");
                 Serial.println("LED ON command received");
+				shelfOn = true;
             }
             else if (requestHeader.indexOf("GET /api/led/off") != -1) {
                 client.println("{\"status\":\"LED OFF\"}");
                 Serial.println("LED OFF command received");
+				shelfOn = false;
             }
             else if (requestHeader.indexOf("GET /api/config") != -1) {
+                shelfOn = true;
                 StaticJsonDocument<1024> doc;
                 doc["delayTime"] = delayTime;
                 doc["effectNumber"] = effectNumber;
@@ -220,7 +619,6 @@ void handleWebServer() {
     }
 }
 
-
 void processJsonConfig(const String& jsonString) {
     StaticJsonDocument<1024> doc;
     DeserializationError error = deserializeJson(doc, jsonString);
@@ -238,6 +636,11 @@ void processJsonConfig(const String& jsonString) {
 
     // Update effectNumber if present
     if (doc.containsKey("effectNumber")) {
+		if (effectNumber != doc["effectNumber"]) {
+			for (int i = 0; i < LIGHT_COUNT; i++) {
+				setLed(i, "#000000", 0, 0);
+			}
+		}
         effectNumber = doc["effectNumber"];
     }
 
