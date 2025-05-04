@@ -143,7 +143,7 @@ void focalCheck(float delayTime) {
     Serial.println(focalPoint);
 }
 
-// 11
+// 11 -> DONE?
 void StateOfTrance() {
     int sc1 = 4; 
     int sc2 = 2;
@@ -243,7 +243,7 @@ void StateOfTrance() {
     }
 }
 
-// 10
+// 10 -> DONE
 void Medusa() {
     for (int i = 0; i < LIGHT_COUNT; i++) {
 		setLed(i, colors[i], whiteValues[i], brightnessValues[i]);
@@ -284,7 +284,7 @@ void Medusa() {
     }
 }
 
-// 9
+// 9 -> DONE?
 void LapisLazuli() {
     for (int i = 0; i < LIGHT_COUNT; i++) {
 		setLed(i, colors[0], whiteValues[0], brightnessValues[0]);
@@ -328,7 +328,7 @@ void LapisLazuli() {
     }
 }
 
-// 8
+// 8 -> DONE
 void BerghainBitte() {
 	for (int i = 0; i < LIGHT_COUNT; i++) {
 		setLed(i, "#000000", 0, 0);
@@ -496,7 +496,7 @@ void BerghainBitte() {
     }
 }
 
-// 7
+// 7 -> DONE
 void TheUnderground() {
     if (focal == -1) {
         for (int i = 0; i < COLOR_COUNT; i++) {
@@ -535,7 +535,7 @@ void TheUnderground() {
     }
 }
 
-// 6
+// 6 -> DONE
 void Still() {
     for (int i = 0; i < LIGHT_COUNT; i++) {
 		setLed(i, colors[i], whiteValues[i], brightnessValues[i]);
@@ -543,7 +543,7 @@ void Still() {
     }
 }
 
-// 5
+// 5 -> DONE
 void Cortez() {
     if (focal != -1) {
         for (int j = 0; j < COLOR_COUNT; j++) {
@@ -595,7 +595,7 @@ void Cortez() {
     }
 }
 
-// 4
+// 4 -> DONE
 void Decay() {
     int strobeCount1 = 2;
     int strobeCount2 = 2;
