@@ -42,7 +42,7 @@ String startupColors[] = {
 
 int focal = -1;
 bool shelfOn = false;
-int delayTime = 0;
+float delayTime = 0.0;
 int whiteValues[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int brightnessValues[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int effectNumber = 0;
@@ -70,11 +70,11 @@ void BerghainBitte();
 void LapisLazuli();
 void Medusa();
 void StateOfTrance();
-void focalCheck(int delayTime);
+void focalCheck(float delayTime);
 
 void setup() {
 	Serial.begin(9600);
-	while (!Serial) { focalCheck(100); }
+	while (!Serial) { focalCheck(100.0); }
 	connectToWifi();
 	ledSetup();
 }
@@ -93,7 +93,7 @@ void loop() {
     }
 }
 
-void focalCheck(int delayTime) {
+void focalCheck(float delayTime) {
     handleWebServer();
     delay(delayTime);
     const byte HALL_PINS[] = { A0, A1, A2, A3, A4 }; 
@@ -151,6 +151,7 @@ void StateOfTrance() {
     if (focal == -1) {
         for (int j = 0; j < LIGHT_COUNT; j++) {
             for (int k = 0; k < sc1; k++) {
+                if (effectNumber != 11) return;
                 for (int i = 0; i < ls; i++) {
                     int li = j + i;
                     if (li < LIGHT_COUNT) { 
@@ -167,11 +168,15 @@ void StateOfTrance() {
                     }
                 }
 
-                if ((j % 4 == 0) && (k % 4 == 0)) focalCheck(delayTime);
+                if ((j % 4 == 0) && (k % 4 == 0)) {
+                    focalCheck(delayTime);
+                }
                 else delay(delayTime);
             }
 
             for (int strobe = 0; strobe < sc2; strobe++) {
+                if (effectNumber != 11) return;
+
                 for (int i = 0; i < ls; i++) {
                     int ledIndex = j + i;
                     if (ledIndex < LIGHT_COUNT) { 
@@ -194,6 +199,8 @@ void StateOfTrance() {
             int distance = abs(focal - j);  
 
             for (int k = 0; k < sc1; k++) {
+                if (effectNumber != 11) return;
+
                 for (int i = 0; i < ls; i++) {
                     int li = distance + i;  
                     if (li < LIGHT_COUNT) {     
@@ -214,6 +221,8 @@ void StateOfTrance() {
             }
 
             for (int strobe = 0; strobe < sc2; strobe++) {
+                if (effectNumber != 11) return;
+
                 for (int i = 0; i < ls; i++) {
                     int ledIndex = distance + i;
                     if (ledIndex < LIGHT_COUNT) { 
@@ -243,6 +252,8 @@ void Medusa() {
     if (focal != -1) {
         for (int i = 1; i < COLOR_COUNT; i++) {
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
+                if (effectNumber != 10) return;
+
                 int position1 = (focal + 1 + j) % LIGHT_COUNT;
                 int position2 = (16 + focal - j) % LIGHT_COUNT;
 
@@ -260,6 +271,8 @@ void Medusa() {
     else {
         for (int i = 0; i < COLOR_COUNT; i++) {
             for (int j = 0; j < LIGHT_COUNT; j++) {
+                if (effectNumber != 10) return;
+
 				setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
 
                 if((i % 4 == 0) && (j % 4 == 0)) focalCheck(delayTime);
@@ -280,6 +293,8 @@ void LapisLazuli() {
     if (focal == -1) {
         for (int i = 0; i < LIGHT_COUNT; i++) {
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
+                if (effectNumber != 9) return;
+
                 int colorIndex1 = ((i + 1) % (COLOR_COUNT / 2));
                 int colorIndex2 = ((i + 2) % COLOR_COUNT);
 
@@ -298,6 +313,8 @@ void LapisLazuli() {
     else {
         for (int i = 0; i < COLOR_COUNT; i++) {
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
+                if (effectNumber != 9) return;
+
                 int position1 = (focal + 1 + j) % LIGHT_COUNT;
                 int position2 = (LIGHT_COUNT + focal - j) % LIGHT_COUNT;
                 int colorIndex1 = (i + 1) % COLOR_COUNT;
@@ -313,6 +330,9 @@ void LapisLazuli() {
 
 // 8
 void BerghainBitte() {
+	for (int i = 0; i < LIGHT_COUNT; i++) {
+		setLed(i, "#000000", 0, 0);
+	}
     if (focal == -1) {
         for (int i = 0; i < COLOR_COUNT; i++) {
             int m = (i + 1) % COLOR_COUNT;
@@ -327,6 +347,8 @@ void BerghainBitte() {
                 int z = (j + 4) % LIGHT_COUNT;
 
                 for (int x = 0; x < 2; x++) {
+                    if (effectNumber != 8) return;
+
 					setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
                     delay(delayTime);
 					setLed(j, "#000000", 0, 0);
@@ -368,6 +390,8 @@ void BerghainBitte() {
                 int zb = (jb + 4) % LIGHT_COUNT;
 
                 for (int x = 0; x < 2; x++) {
+                    if (effectNumber != 8) return;
+
 					setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
 					setLed(jb, colors[i], whiteValues[i], brightnessValues[i]);
 
@@ -423,6 +447,8 @@ void BerghainBitte() {
                 int zb = (jb + 4) % LIGHT_COUNT;
 
                 for (int x = 0; x < 2; x++) {
+                    if (effectNumber != 8) return;
+
 					setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
 					setLed(jb, colors[i], whiteValues[i], brightnessValues[i]);
 
@@ -477,10 +503,12 @@ void TheUnderground() {
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
                 int offset = (i + j * 2) % LIGHT_COUNT;
                 for (int k = 0; k < delayTime * 2; k++) {
+                    if (effectNumber != 7) return;
+
 					setLed(offset, "#000000", 0, 0);
                     delay(3); 
 					setLed(offset, colors[i], whiteValues[i], brightnessValues[i]);
-                    if (j % 4 == 0) focalCheck(3);
+                    if (j % 4 == 0) focalCheck(3.0);
                     else delay(3);
                 }
             }
@@ -492,12 +520,14 @@ void TheUnderground() {
                 int position1 = (focal + 1 + (i + j * 2) % LIGHT_COUNT) % LIGHT_COUNT;
                 int position2 = (16 + focal - (i + j * 2) % LIGHT_COUNT) % LIGHT_COUNT;
                 for (int k = 0; k < delayTime * 2; k++) {
+                    if (effectNumber != 7) return;
+
 					setLed(position1, "#000000", 0, 0);
 					setLed(position2, "#000000", 0, 0);
                     delay(3);
 					setLed(position1, colors[i], whiteValues[i], brightnessValues[i]);
 					setLed(position2, colors[i], whiteValues[i], brightnessValues[i]);
-                    if (j % 4 == 0) focalCheck(3);
+                    if (j % 4 == 0) focalCheck(3.0);
                     else delay(3);
                 }
             }
@@ -518,6 +548,8 @@ void Cortez() {
     if (focal != -1) {
         for (int j = 0; j < COLOR_COUNT; j++) {
             for (int i = 0; i < LIGHT_COUNT / 2; i++) {
+                if (effectNumber != 5) return;
+
                 int ledIndex = (focal + i) % LIGHT_COUNT;
                 int ledIndex2 = (focal - i + LIGHT_COUNT) % LIGHT_COUNT;
 
@@ -540,6 +572,8 @@ void Cortez() {
     else {
         for (int j = 0; j < COLOR_COUNT; j++) {
             for (int i = 0; i < LIGHT_COUNT; i++) {
+                if (effectNumber != 5) return;
+
                 int ledIndex = (j + i) % LIGHT_COUNT;
                 int ledIndex2 = (j + i + 1) % LIGHT_COUNT;
 
@@ -569,9 +603,11 @@ void Decay() {
     if (focal == -1) {
         for (int startIdx = LIGHT_COUNT - 1; startIdx >= 0; startIdx--) {
             for (int strobe = 0; strobe < strobeCount1; strobe++) {
-                focalCheck(0);
+                focalCheck(0.0);
 
                 for (int i = 0; i < ledsPerGroup; i++) {
+                    if (effectNumber != 4) return;
+
                     int ledIndex = startIdx + i;
                     for (int ha = 0; ha < LIGHT_COUNT / 4; ha++) {
 						setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
@@ -589,6 +625,8 @@ void Decay() {
 
             for (int strobe = 0; strobe < strobeCount2; strobe++) {
                 for (int i = 0; i < ledsPerGroup; i++) {
+                    if (effectNumber != 4) return;
+
                     int ledIndex = startIdx + i;
                     for (int ha = 0; ha < 4; ha++) {
 						setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
@@ -608,6 +646,8 @@ void Decay() {
                 for (int i = 0; i < ledsPerGroup; i++) {
                     int ledIndex = startIdx + i;
                     for (int ha = 0; ha < 4; ha++) {
+                        if (effectNumber != 4) return;
+
 						setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
 						setLed(ledIndex, "#000000", 0, 0);
                     }
@@ -624,6 +664,8 @@ void Decay() {
                 for (int i = 0; i < ledsPerGroup; i++) {
                     int ledIndex = startIdx + i;
                     for (int ha = 0; ha < 4; ha++) {
+                        if (effectNumber != 4) return;
+
 						setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
 						setLed(ledIndex, "#000000", 0, 0);
                     }
@@ -641,12 +683,14 @@ void Decay() {
         for (int startIdx = LIGHT_COUNT - 1; startIdx >= focal; startIdx--) {
             for (int startIdx = focal; startIdx < LIGHT_COUNT; startIdx++) {
                 for (int strobe = 0; strobe < strobeCount1; strobe++) {
-                    focalCheck(0);
+                    focalCheck(0.0);
 
                     for (int i = 0; i < ledsPerGroup; i++) {
                         int ledIndex = startIdx + i;
                         int ledIndex2 = startIdx + i - 8;
                         for (int ha = 0; ha < 4; ha++) {
+                            if (effectNumber != 4) return;
+
 							setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
 							setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
 							setLed(ledIndex, "#000000", 0, 0);
@@ -668,6 +712,8 @@ void Decay() {
                         int ledIndex = startIdx + i;
                         int ledIndex2 = startIdx - i;
                         for (int ha = 0; ha < 4; ha++) {
+                            if (effectNumber != 4) return;
+
 							setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
 							setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
 							setLed(ledIndex, "#000000", 0, 0);
@@ -695,76 +741,89 @@ void FeelTheFunk() {
     int ledsPerGroup = 1;
 
     if (focal == -1) {
-        focalCheck(delayTime / 4);
+        focalCheck(delayTime / 12);
 
         for (int strobe = 0; strobe < strobeCount1; strobe++) {
+
             for (int i = 0; i < ledsPerGroup; i++) {
+                if (effectNumber != 3) return;
+
                 int ledIndex = random(0, LIGHT_COUNT);
-                delay(delayTime / 12);
 				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
-            delay(delayTime / 12);
 
             for (int i = 0; i < ledsPerGroup; i++) {
+                if (effectNumber != 3) return;
+
                 int ledIndex = random(0, LIGHT_COUNT);
-                delay(delayTime / 8);
 				setLed(ledIndex + 1, "#000000", 0, 0);
             }
         }
 
+        delay(delayTime / 12);
+
         for (int strobe = 0; strobe < strobeCount2; strobe++) {
+
             for (int i = 0; i < ledsPerGroup; i++) {
-                delay(delayTime / 12);
+                if (effectNumber != 3) return;
+
                 int ledIndex = random(0, LIGHT_COUNT);
 				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
-            delay(delayTime / 12);
 
             for (int i = 0; i < ledsPerGroup; i++) {
-                focalCheck(delayTime / 12);
+                if (effectNumber != 3) return;
+
                 int ledIndex = random(0, LIGHT_COUNT);
 				setLed(ledIndex + 1, "#000000", 0, 0);
             }
         }
     }
     else {
-        focalCheck(delayTime / 4);
+        focalCheck(delayTime / 12);
 
         for (int strobe = focal; strobe < strobeCount1; strobe++) {
+
             for (int i = 0; i < ledsPerGroup; i++) {
+                if (effectNumber != 3) return;
+
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-                delay(delayTime / 12);
 				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
 				setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
-            delay(delayTime / 12);
 
             for (int i = focal; i < ledsPerGroup; i++) {
+                if (effectNumber != 3) return;
+
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-                delay(delayTime / 8);
 				setLed(ledIndex + 1, "#000000", 0, 0);
 				setLed(ledIndex2 + 1, "#000000", 0, 0);
             }
         }
 
+        delay(delayTime / 12);
+
+
         for (int strobe = focal + 1; strobe >= 0; strobe--) {
+
             for (int i = 0; i < ledsPerGroup; i++) {
-                delay(delayTime / 12);
+                if (effectNumber != 3) return;
+
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
 				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
 				setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
-            delay(delayTime / 12);
 
             for (int i = focal; i < ledsPerGroup; i++) {
-                focalCheck(delayTime / 12);
+                if (effectNumber != 3) return;
+
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
 				setLed(ledIndex + 1, "#000000", 0, 0);
@@ -776,60 +835,73 @@ void FeelTheFunk() {
 
 // 2
 void ThePianoMan() {
+    for (int i = 0; i < LIGHT_COUNT; i++) {
+        setLedChill(i, "#000000", 0, 0);
+    }
+
+    // Create pattern indices that can wrap around the LIGHT_COUNT
     int patternIndices[] = { 1, 2, 3, 2, 4, 3, 2, 1, 0, 1, 2, 1, 3, 2, 1, 0 };
     int pattern2Indices[] = { 7, 8, 9, 8, 10, 9, 8, 7, 6, 7, 8, 7, 9, 8, 7, 6 };
     int pattern3Indices[] = { 13, 14, 15, 14, 16, 15, 14, 13, 12, 13, 14, 13, 15, 14, 13, 12 };
 
     if (focal == -1) {
-        for (int x = 0; x < COLOR_COUNT; x++) {
-            focalCheck(0);
+        for (int x = 0; x < COLOR_COUNT * 2; x++) {
+            focalCheck(0.0);
 
             for (int i = 0; i < delayTime; i++) {
-				setLed(patternIndices[x], colors[x], whiteValues[x], brightnessValues[x]);
-				setLed(pattern2Indices[x], colors[x], whiteValues[x], brightnessValues[x]);
-				setLed(pattern3Indices[x], colors[x], whiteValues[x], brightnessValues[x]);
+                if (effectNumber != 2) return;
+
+                // Apply modulo to ensure LED indices wrap around properly
+                int index1 = patternIndices[x % LIGHT_COUNT] % LIGHT_COUNT;
+                int index2 = pattern2Indices[x % LIGHT_COUNT] % LIGHT_COUNT;
+                int index3 = pattern3Indices[x % LIGHT_COUNT] % LIGHT_COUNT;
+
+                // Handle negative indices by adding LIGHT_COUNT
+                if (index1 < 0) index1 += LIGHT_COUNT;
+                if (index2 < 0) index2 += LIGHT_COUNT;
+                if (index3 < 0) index3 += LIGHT_COUNT;
+
+                setLedChill(index1, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
+                setLedChill(index2, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
+                setLedChill(index3, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
 
                 delay(5);
 
-				setLed(patternIndices[x], "#000000", 0, 0);
-				setLed(pattern2Indices[x], "#000000", 0, 0);
-				setLed(pattern3Indices[x], "#000000", 0, 0);
+                setLedChill(index1, "#000000", 0, 0);
+                setLedChill(index2, "#000000", 0, 0);
+                setLedChill(index3, "#000000", 0, 0);
 
                 delay(5);
             }
         }
     }
     else {
-        int pattern4Indices[] = { 3, 4, 5, 4, 6, 5, 4, 3, 2, 3, 4, 3, 5, 4, 3, 2 };
-
-        for (int x = 0; x < COLOR_COUNT; x++) {
-            focalCheck(0);
-
+        // Create a new pattern for focal-based operation that wraps properly
+        for (int x = 0; x < COLOR_COUNT * 2; x++) {
             for (int i = 0; i < delayTime; i++) {
-                int led1 = pattern4Indices[x] + focal;
-                if (led1 < 0) {
-                    led1 = LIGHT_COUNT + led1;
-                }
-                else if (led1 > 15) {
-                    led1 = led1 - LIGHT_COUNT;
-                }
+                if (effectNumber != 2) return;
 
-                int led2 = focal - pattern4Indices[x];
-                if (led2 < 0) {
-                    led2 = LIGHT_COUNT + led2;
-                }
-                else if (led2 > 15) {
-                    led2 = led2 - LIGHT_COUNT;
-                }
+                // Create a wave pattern from the focal point
+                // These offset calculations ensure proper wrapping
+                int offset = x % 8; // Use a smaller range for more visible movement
 
-				setLed(led1, colors[x], whiteValues[x], brightnessValues[x]);
-				setLed(led2, colors[x], whiteValues[x], brightnessValues[x]);
-                
-                delay(5);
+                // Calculate positions relative to focal point with wrapping
+                int led1 = (focal + offset) % LIGHT_COUNT;
+                int led2 = (focal - offset + LIGHT_COUNT) % LIGHT_COUNT;
+                int led3 = (focal + offset + LIGHT_COUNT / 2) % LIGHT_COUNT;
+                int led4 = (focal - offset + LIGHT_COUNT / 2 + LIGHT_COUNT) % LIGHT_COUNT;
 
+                setLedChill(led1, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
+                setLedChill(led2, colors[(x + 2) % LIGHT_COUNT], whiteValues[(x + 2) % LIGHT_COUNT], brightnessValues[(x + 2) % LIGHT_COUNT]);
+                setLedChill(led3, colors[(x + 4) % LIGHT_COUNT], whiteValues[(x + 4) % LIGHT_COUNT], brightnessValues[(x + 4) % LIGHT_COUNT]);
+                setLedChill(led4, colors[(x + 6) % LIGHT_COUNT], whiteValues[(x + 6) % LIGHT_COUNT], brightnessValues[(x + 6) % LIGHT_COUNT]);
 
-				setLed(led1, "#000000", 0, 0);
-				setLed(led2, "#000000", 0, 0);
+                focalCheck(5.0);
+
+                setLedChill(led1, "#000000", 0, 0);
+                setLedChill(led2, "#000000", 0, 0);
+                setLedChill(led3, "#000000", 0, 0);
+                setLedChill(led4, "#000000", 0, 0);
 
                 delay(5);
             }
@@ -837,102 +909,143 @@ void ThePianoMan() {
     }
 }
 
-// 1
+
+// 1 -> DONE
 void Smolder() {
     if (focal == -1) {
         for (int xy = 0; xy < COLOR_COUNT; xy++) {
-            focalCheck(delayTime);
+            // First pattern - moving through even indices
+            for (int j = 0; j < LIGHT_COUNT; j += 2) {
+                if (effectNumber != 1) return;
 
-            for (int j = 0; j < 18; j += 2) {
-                setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                // Apply LED with proper wrapping
+                setLed(j % LIGHT_COUNT, colors[xy], whiteValues[xy], brightnessValues[xy]);
+
                 int f = 0;
                 if (j == 8) {
                     f = (xy + 1) % COLOR_COUNT;
-                    setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                    focalCheck(delayTime / 16);
+                    setLed(j % LIGHT_COUNT, colors[f], whiteValues[f], brightnessValues[f]);
                 }
+
                 if (j == 12) {
                     f = (xy + 2) % COLOR_COUNT;
-                    setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                    delay(delayTime / 16);
+                    setLed(j % LIGHT_COUNT, colors[f], whiteValues[f], brightnessValues[f]);
                 }
+
                 f = (xy + 3) % COLOR_COUNT;
-                setLed(j + 1, colors[f], whiteValues[f], brightnessValues[f]);
+                // Ensure the next LED wraps properly
+                int nextLed = (j + 1) % LIGHT_COUNT;
+                setLed(nextLed, colors[f], whiteValues[f], brightnessValues[f]);
             }
 
-            for (int j = 1; j < LIGHT_COUNT + 3; j += 2) {
-                setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+            // Second pattern - moving through odd indices with proper wrapping
+            for (int j = 1; j < LIGHT_COUNT; j += 2) {
+                if (effectNumber != 1) return;
+
+                setLed(j % LIGHT_COUNT, colors[xy], whiteValues[xy], brightnessValues[xy]);
                 int f = (xy + 3) % COLOR_COUNT;
-                setLed(j - 1, colors[f], whiteValues[f], brightnessValues[f]);
+
+                // Ensure previous LED wraps properly
+                int prevLed = (j - 1 + LIGHT_COUNT) % LIGHT_COUNT;
+                setLed(prevLed, colors[f], whiteValues[f], brightnessValues[f]);
             }
         }
     }
     else {
         for (int xy = 0; xy < COLOR_COUNT; xy++) {
-            focalCheck(delayTime);
-
             int f = 0;
 
-            for (int j = focal; j < LIGHT_COUNT; j += 2) {
-                setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
-                if (j == 8) {
+            // First pattern - from focal point forward with wrapping
+            for (int j = focal; j < focal + LIGHT_COUNT; j += 2) {
+                if (effectNumber != 1) return;
+
+                // Use modulo to wrap around the LED strip
+                int currentLed = j % LIGHT_COUNT;
+                setLed(currentLed, colors[xy], whiteValues[xy], brightnessValues[xy]);
+
+                if (currentLed == 8) {
                     f = (xy + 1) % COLOR_COUNT;
-					setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                    focalCheck(delayTime / 16);
+                    setLed(currentLed, colors[f], whiteValues[f], brightnessValues[f]);
                 }
 
-                if (j == 12) {
+                if (currentLed == 12) {
                     f = (xy + 2) % COLOR_COUNT;
-					setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                    delay(delayTime / 16);
+                    setLed(currentLed, colors[f], whiteValues[f], brightnessValues[f]);
                 }
+
                 f = (xy + 3) % COLOR_COUNT;
-                int led = (j + 1) % LIGHT_COUNT;
-				setLed(led, colors[f], whiteValues[f], brightnessValues[f]);
+                int nextLed = (j + 1) % LIGHT_COUNT;
+                setLed(nextLed, colors[f], whiteValues[f], brightnessValues[f]);
             }
 
-            for (int j = focal; j >= 0; j -= 2) {
-				setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
-                if (j == 8) {
+            // Second pattern - from focal point backward with wrapping
+            for (int j = focal; j > focal - LIGHT_COUNT; j -= 2) {
+                if (effectNumber != 1) return;
+
+                // Calculate wrapped LED index
+                int currentLed = (j + LIGHT_COUNT) % LIGHT_COUNT;
+                setLed(currentLed, colors[xy], whiteValues[xy], brightnessValues[xy]);
+
+                if (currentLed == 8) {
                     f = (xy + 1) % COLOR_COUNT;
-					setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                    delay(delayTime / 16);
+                    setLed(currentLed, colors[f], whiteValues[f], brightnessValues[f]);
                 }
-                if (j == 12) {
+
+                if (currentLed == 12) {
                     f = (xy + 2) % COLOR_COUNT;
-					setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                    delay(delayTime / 16);
+                    setLed(currentLed, colors[f], whiteValues[f], brightnessValues[f]);
                 }
-                int led = (j + 1) % LIGHT_COUNT;
+
                 f = (xy + 3) % COLOR_COUNT;
-				setLed(led, colors[f], whiteValues[f], brightnessValues[f]);
+                // Handle negative indices by adding LIGHT_COUNT before modulo
+                int nextLed = ((j + 1) + LIGHT_COUNT) % LIGHT_COUNT;
+                setLed(nextLed, colors[f], whiteValues[f], brightnessValues[f]);
             }
 
-            for (int j = focal; j < LIGHT_COUNT + 1; j += 2) {
-				setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
-                f = (xy + 3) % COLOR_COUNT;
-				setLed(j - 1, colors[f], whiteValues[f], brightnessValues[f]);
-            }
+            // Front to back alternating pattern with proper wrapping
+            for (int offset = 0; offset < LIGHT_COUNT; offset++) {
+                if (effectNumber != 1) return;
 
-            for (int j = focal; j >= 0; j -= 2) {
-				setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
-				f = (xy + 3) % COLOR_COUNT;
-				setLed(j - 1, colors[f], whiteValues[f], brightnessValues[f]);
+                // Forward pattern
+                int forwardLed = (focal + offset) % LIGHT_COUNT;
+                if (offset % 2 == 0) {
+                    setLed(forwardLed, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                    f = (xy + 3) % COLOR_COUNT;
+                    int prevLed = (forwardLed - 1 + LIGHT_COUNT) % LIGHT_COUNT;
+                    setLed(prevLed, colors[f], whiteValues[f], brightnessValues[f]);
+                    delay(delayTime / 16);
+                }
             }
         }
-        
     }
 }
 
-// 0
+
+// 0 -> DONE
 void StuckInABlender() {
     unsigned long currentTime = millis();
 	int colorOffset = (currentTime / 100) % COLOR_COUNT;
 
     if (focal == -1) {
 		for (int i = 0; i < LIGHT_COUNT; i++) {
-            int colorIndex = (i + colorOffset) % COLOR_COUNT;
-			setLed(i, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
-            delay(delayTime);
+            if (effectNumber != 0) return;
 
+            int colorIndex = (i + colorOffset) % COLOR_COUNT;
+            delay(delayTime / 8);
+
+			setLed(i, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
 		}
     }
     else {
 		for (int i = 0; i < LIGHT_COUNT/2; i++) {
+            if (effectNumber != 0) return;
+
 			int led1 = focal - i;
 			int led2 = focal + i;
 
@@ -942,7 +1055,7 @@ void StuckInABlender() {
 			int colorIndex = (i + colorOffset) % COLOR_COUNT;
 			setLed(led1, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
 			setLed(led2, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
-			focalCheck(delayTime);
+			focalCheck(delayTime / 8);
 		}
     }
 
@@ -992,7 +1105,7 @@ void selectEffect(int effectNumber) {
     }
 }
 
-void setLed(int L, String hex, int W, int Brightness) {
+void setLedChill(int L, String hex, int newW, int Brightness) {
     // hex to rgb
 	int R = (int)strtol(hex.substring(1, 3).c_str(), nullptr, 16);
 	int G = (int)strtol(hex.substring(3, 5).c_str(), nullptr, 16);
@@ -1002,7 +1115,7 @@ void setLed(int L, String hex, int W, int Brightness) {
     R = (R * Brightness) / 255;
     G = (G * Brightness) / 255;
     B = (B * Brightness) / 255;
-    W = (W * Brightness) / 255;
+    int W = (newW * Brightness) / 255;
 
     // Set LED to color passed in.
     switch ((L + 1) % 3) {
@@ -1179,6 +1292,381 @@ void setLed(int L, String hex, int W, int Brightness) {
         }
         break;
     }
+}
+
+void setLed(int L, String hex, int newW, int Brightness) {
+    // hex to rgb
+    int newR = (int)strtol(hex.substring(1, 3).c_str(), nullptr, 16);
+    int newG = (int)strtol(hex.substring(3, 5).c_str(), nullptr, 16);
+    int newB = (int)strtol(hex.substring(5, 7).c_str(), nullptr, 16);
+    int R = 0;
+	int G = 0;
+	int B = 0;
+	int W = 0;
+
+    for(int i = 0; i < 2; i ++) {
+        R = 0;
+        G = 0;
+        B = 0;
+        W = 0;
+
+        switch ((L + 1) % 3) {
+        case 1:
+            switch (L + 1) {
+            case 1:
+                leds[0].r = R;
+                FastLED.show();
+                leds[0].g = G;
+                FastLED.show();
+                leds[0].b = B;
+                FastLED.show();
+                leds[1].g = W;
+                FastLED.show();
+                break;
+            case 4:
+                leds[4].r = R;
+                FastLED.show();
+                leds[4].g = G;
+                FastLED.show();
+                leds[4].b = B;
+                FastLED.show();
+                leds[5].g = W;
+                FastLED.show();
+                break;
+            case 7:
+                leds[8].r = R;
+                FastLED.show();
+                leds[8].g = G;
+                FastLED.show();
+                leds[8].b = B;
+                FastLED.show();
+                leds[9].g = W;
+                FastLED.show();
+                break;
+            case 10:
+                leds[12].r = R;
+                FastLED.show();
+                leds[12].g = G;
+                FastLED.show();
+                leds[12].b = B;
+                FastLED.show();
+                leds[13].g = W;
+                FastLED.show();
+                break;
+            case 13:
+                leds[16].r = R;
+                FastLED.show();
+                leds[16].g = G;
+                FastLED.show();
+                leds[16].b = B;
+                FastLED.show();
+                leds[17].g = W;
+                FastLED.show();
+                break;
+            case 16:
+                leds[20].r = R;
+                FastLED.show();
+                leds[20].g = G;
+                FastLED.show();
+                leds[20].b = B;
+                FastLED.show();
+                leds[21].g = W;
+                FastLED.show();
+                break;
+            }
+            break;
+        case 2:
+            switch (L + 1) {
+            case 2:
+                leds[1].r = G;
+                FastLED.show();
+                leds[1].b = R;
+                FastLED.show();
+                leds[2].r = W;
+                FastLED.show();
+                leds[2].g = B;
+                FastLED.show();
+                break;
+            case 5:
+                leds[5].b = R;
+                FastLED.show();
+                leds[5].r = G;
+                FastLED.show();
+                leds[6].g = B;
+                FastLED.show();
+                leds[6].r = W;
+                FastLED.show();
+                break;
+            case 8:
+                leds[9].r = G;
+                FastLED.show();
+                leds[9].b = R;
+                FastLED.show();
+                leds[10].r = W;
+                FastLED.show();
+                leds[10].g = B;
+                FastLED.show();
+                break;
+            case 11:
+                leds[13].r = G;
+                FastLED.show();
+                leds[13].b = R;
+                FastLED.show();
+                leds[14].r = W;
+                FastLED.show();
+                leds[14].g = B;
+                FastLED.show();
+                break;
+            case 14:
+                leds[17].b = R;
+                FastLED.show();
+                leds[17].r = G;
+                FastLED.show();
+                leds[18].g = B;
+                FastLED.show();
+                leds[18].r = W;
+                FastLED.show();
+                break;
+            }
+            break;
+        case 0:
+            switch (L + 1) {
+            case 3:
+                leds[3].r = B;
+                FastLED.show();
+                leds[3].g = R;
+                FastLED.show();
+                leds[3].b = W;
+                FastLED.show();
+                leds[2].b = G;
+                FastLED.show();
+                break;
+            case 6:
+                leds[7].r = B;
+                FastLED.show();
+                leds[7].g = R;
+                FastLED.show();
+                leds[7].b = W;
+                FastLED.show();
+                leds[6].b = G;
+                FastLED.show();
+                break;
+            case 9:
+                leds[11].g = R;
+                FastLED.show();
+                leds[10].b = G;
+                FastLED.show();
+                leds[11].r = B;
+                FastLED.show();
+                leds[11].b = W;
+                FastLED.show();
+                break;
+            case 12:
+                leds[15].r = B;
+                FastLED.show();
+                leds[15].g = R;
+                FastLED.show();
+                leds[15].b = W;
+                FastLED.show();
+                leds[14].b = G;
+                FastLED.show();
+                break;
+            case 15:
+                leds[19].r = B;
+                FastLED.show();
+                leds[19].g = R;
+                FastLED.show();
+                leds[19].b = W;
+                FastLED.show();
+                leds[18].b = G;
+                FastLED.show();
+                break;
+            }
+            break;
+        }
+
+        R = (newR * Brightness) / 255;
+        G = (newG * Brightness) / 255;
+        B = (newB * Brightness) / 255;
+        W = (newW * Brightness) / 255;
+        
+
+        switch ((L + 1) % 3) {
+        case 1:
+            switch (L + 1) {
+            case 1:
+                leds[0].r = R;
+                FastLED.show();
+                leds[0].g = G;
+                FastLED.show();
+                leds[0].b = B;
+                FastLED.show();
+                leds[1].g = W;
+                FastLED.show();
+                break;
+            case 4:
+                leds[4].r = R;
+                FastLED.show();
+                leds[4].g = G;
+                FastLED.show();
+                leds[4].b = B;
+                FastLED.show();
+                leds[5].g = W;
+                FastLED.show();
+                break;
+            case 7:
+                leds[8].r = R;
+                FastLED.show();
+                leds[8].g = G;
+                FastLED.show();
+                leds[8].b = B;
+                FastLED.show();
+                leds[9].g = W;
+                FastLED.show();
+                break;
+            case 10:
+                leds[12].r = R;
+                FastLED.show();
+                leds[12].g = G;
+                FastLED.show();
+                leds[12].b = B;
+                FastLED.show();
+                leds[13].g = W;
+                FastLED.show();
+                break;
+            case 13:
+                leds[16].r = R;
+                FastLED.show();
+                leds[16].g = G;
+                FastLED.show();
+                leds[16].b = B;
+                FastLED.show();
+                leds[17].g = W;
+                FastLED.show();
+                break;
+            case 16:
+                leds[20].r = R;
+                FastLED.show();
+                leds[20].g = G;
+                FastLED.show();
+                leds[20].b = B;
+                FastLED.show();
+                leds[21].g = W;
+                FastLED.show();
+                break;
+            }
+            break;
+        case 2:
+            switch (L + 1) {
+            case 2:
+                leds[1].r = G;
+                FastLED.show();
+                leds[1].b = R;
+                FastLED.show();
+                leds[2].r = W;
+                FastLED.show();
+                leds[2].g = B;
+                FastLED.show();
+                break;
+            case 5:
+                leds[5].b = R;
+                FastLED.show();
+                leds[5].r = G;
+                FastLED.show();
+                leds[6].g = B;
+                FastLED.show();
+                leds[6].r = W;
+                FastLED.show();
+                break;
+            case 8:
+                leds[9].r = G;
+                FastLED.show();
+                leds[9].b = R;
+                FastLED.show();
+                leds[10].r = W;
+                FastLED.show();
+                leds[10].g = B;
+                FastLED.show();
+                break;
+            case 11:
+                leds[13].r = G;
+                FastLED.show();
+                leds[13].b = R;
+                FastLED.show();
+                leds[14].r = W;
+                FastLED.show();
+                leds[14].g = B;
+                FastLED.show();
+                break;
+            case 14:
+                leds[17].b = R;
+                FastLED.show();
+                leds[17].r = G;
+                FastLED.show();
+                leds[18].g = B;
+                FastLED.show();
+                leds[18].r = W;
+                FastLED.show();
+                break;
+            }
+            break;
+        case 0:
+            switch (L + 1) {
+            case 3:
+                leds[3].r = B;
+                FastLED.show();
+                leds[3].g = R;
+                FastLED.show();
+                leds[3].b = W;
+                FastLED.show();
+                leds[2].b = G;
+                FastLED.show();
+                break;
+            case 6:
+                leds[7].r = B;
+                FastLED.show();
+                leds[7].g = R;
+                FastLED.show();
+                leds[7].b = W;
+                FastLED.show();
+                leds[6].b = G;
+                FastLED.show();
+                break;
+            case 9:
+                leds[11].g = R;
+                FastLED.show();
+                leds[10].b = G;
+                FastLED.show();
+                leds[11].r = B;
+                FastLED.show();
+                leds[11].b = W;
+                FastLED.show();
+                break;
+            case 12:
+                leds[15].r = B;
+                FastLED.show();
+                leds[15].g = R;
+                FastLED.show();
+                leds[15].b = W;
+                FastLED.show();
+                leds[14].b = G;
+                FastLED.show();
+                break;
+            case 15:
+                leds[19].r = B;
+                FastLED.show();
+                leds[19].g = R;
+                FastLED.show();
+                leds[19].b = W;
+                FastLED.show();
+                leds[18].b = G;
+                FastLED.show();
+                break;
+            }
+            break;
+        }
+}
+
 	
 }
 
@@ -1342,11 +1830,15 @@ void handleWebServer() {
                 client.println("{\"status\":\"LED ON\"}");
                 Serial.println("LED ON command received");
 				shelfOn = true;
+                client.stop();
+                return;
             }
             else if (requestHeader.indexOf("GET /api/led/off") != -1) {
                 client.println("{\"status\":\"LED OFF\"}");
                 Serial.println("LED OFF command received");
 				shelfOn = false;
+                client.stop();
+                return;
             }
             else if (requestHeader.indexOf("GET /api/config") != -1) {
                 shelfOn = true;
@@ -1367,6 +1859,9 @@ void handleWebServer() {
                 String jsonResponse;
                 serializeJson(doc, jsonResponse);
                 client.println(jsonResponse);
+
+                client.stop();
+                return;
             }
             else {
                 client.println("{\"error\":\"Unknown command\"}");
@@ -1453,7 +1948,7 @@ void connectToWifi() {
 		Serial.print("Attempting to connect to SSID: ");
 		Serial.println(ssid);
 		status = WiFi.begin(ssid, pass);
-		focalCheck(2000);
+		focalCheck(2000.0);
 	}
 
 	Serial.print("IP Address: ");
