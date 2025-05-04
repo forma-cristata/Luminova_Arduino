@@ -144,6 +144,7 @@ void focalCheck(float delayTime) {
 }
 
 // 11 -> DONE?
+// TODO: Does not rotate around the colors
 void StateOfTrance() {
     int sc1 = 4; 
     int sc2 = 2;
@@ -336,7 +337,7 @@ void BerghainBitte() {
 		setLed(i, "#000000", 0, 0);
 	}
     if (focal == -1) {
-        for (int i = 0; i < COLOR_COUNT; i++) {
+        for (int i = 4; i < COLOR_COUNT + 4; i++) {
             int m = (i + 1) % COLOR_COUNT;
             int n = (i + 2) % COLOR_COUNT;
             int o = (i + 3) % COLOR_COUNT;
@@ -371,7 +372,7 @@ void BerghainBitte() {
         }
     }
     else {
-        for (int i = 0; i < COLOR_COUNT; i++) {
+        for (int i = 4; i < COLOR_COUNT + 4; i++) {
             int m = (i + 1) % COLOR_COUNT;
             int n = (i + 2) % COLOR_COUNT;
             int o = (i + 3) % COLOR_COUNT;
@@ -545,7 +546,7 @@ void Still() {
     }
 }
 
-// 5 -> DONE
+// 5 -> DONE?
 void Cortez() {
     if (focal != -1) {
         for (int j = 0; j < COLOR_COUNT; j++) {
@@ -751,7 +752,7 @@ void FeelTheFunk() {
                 if (effectNumber != 3) return;
 
                 int ledIndex = random(0, LIGHT_COUNT);
-				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+				setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
 
@@ -759,7 +760,7 @@ void FeelTheFunk() {
                 if (effectNumber != 3) return;
 
                 int ledIndex = random(0, LIGHT_COUNT);
-				setLed(ledIndex + 1, "#000000", 0, 0);
+				setLedChill(ledIndex + 1, "#000000", 0, 0);
             }
         }
 
@@ -771,7 +772,7 @@ void FeelTheFunk() {
                 if (effectNumber != 3) return;
 
                 int ledIndex = random(0, LIGHT_COUNT);
-				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+				setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
 
@@ -779,7 +780,7 @@ void FeelTheFunk() {
                 if (effectNumber != 3) return;
 
                 int ledIndex = random(0, LIGHT_COUNT);
-				setLed(ledIndex + 1, "#000000", 0, 0);
+				setLedChill(ledIndex + 1, "#000000", 0, 0);
             }
         }
     }
@@ -793,8 +794,8 @@ void FeelTheFunk() {
 
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-				setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+				setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                setLedChill(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
 
@@ -803,8 +804,8 @@ void FeelTheFunk() {
 
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-				setLed(ledIndex + 1, "#000000", 0, 0);
-				setLed(ledIndex2 + 1, "#000000", 0, 0);
+                setLedChill(ledIndex + 1, "#000000", 0, 0);
+                setLedChill(ledIndex2 + 1, "#000000", 0, 0);
             }
         }
 
@@ -818,8 +819,8 @@ void FeelTheFunk() {
 
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-				setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                setLedChill(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
 
@@ -828,8 +829,8 @@ void FeelTheFunk() {
 
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-				setLed(ledIndex + 1, "#000000", 0, 0);
-				setLed(ledIndex2 + 1, "#000000", 0, 0);
+                setLedChill(ledIndex + 1, "#000000", 0, 0);
+                setLedChill(ledIndex2 + 1, "#000000", 0, 0);
             }
         }
     }
@@ -837,10 +838,6 @@ void FeelTheFunk() {
 
 // 2 -> DONE?
 void ThePianoMan() {
-    for (int i = 0; i < LIGHT_COUNT; i++) {
-        setLedChill(i, "#000000", 0, 0);
-    }
-
     // Create pattern indices that can wrap around the LIGHT_COUNT
     int patternIndices[] = { 1, 2, 3, 2, 4, 3, 2, 1, 0, 1, 2, 1, 3, 2, 1, 0 };
     int pattern2Indices[] = { 7, 8, 9, 8, 10, 9, 8, 7, 6, 7, 8, 7, 9, 8, 7, 6 };
@@ -850,7 +847,7 @@ void ThePianoMan() {
         for (int x = 0; x < COLOR_COUNT * 2; x++) {
             focalCheck(0.0);
 
-            for (int i = 0; i < delayTime; i++) {
+            for (int i = 0; i < delayTime / 2; i++) {
                 if (effectNumber != 2) return;
 
                 // Apply modulo to ensure LED indices wrap around properly
@@ -867,20 +864,18 @@ void ThePianoMan() {
                 setLedChill(index2, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
                 setLedChill(index3, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
 
-                delay(5);
-
                 setLedChill(index1, "#000000", 0, 0);
                 setLedChill(index2, "#000000", 0, 0);
                 setLedChill(index3, "#000000", 0, 0);
 
-                delay(5);
+                delay(2);
             }
         }
     }
     else {
         // Create a new pattern for focal-based operation that wraps properly
         for (int x = 0; x < COLOR_COUNT * 2; x++) {
-            for (int i = 0; i < delayTime; i++) {
+            for (int i = 0; i < delayTime / 2; i++) {
                 if (effectNumber != 2) return;
 
                 // Create a wave pattern from the focal point
@@ -898,14 +893,12 @@ void ThePianoMan() {
                 setLedChill(led3, colors[(x + 4) % LIGHT_COUNT], whiteValues[(x + 4) % LIGHT_COUNT], brightnessValues[(x + 4) % LIGHT_COUNT]);
                 setLedChill(led4, colors[(x + 6) % LIGHT_COUNT], whiteValues[(x + 6) % LIGHT_COUNT], brightnessValues[(x + 6) % LIGHT_COUNT]);
 
-                focalCheck(5.0);
-
                 setLedChill(led1, "#000000", 0, 0);
                 setLedChill(led2, "#000000", 0, 0);
                 setLedChill(led3, "#000000", 0, 0);
                 setLedChill(led4, "#000000", 0, 0);
 
-                delay(5);
+                focalCheck(2);
             }
         }
     }
