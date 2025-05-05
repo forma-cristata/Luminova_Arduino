@@ -83,13 +83,15 @@ void loop() {
     currentSettingPrint();
     handleWebServer();
 
-    if (!shelfOn) {
-		for (int i = 0; i < LIGHT_COUNT; i++) {
-			setLed(i, "#000000", 0, 0);
-		}
+    if (shelfOn) {
+        selectEffect(effectNumber);
+
+		
     }
     else {
-        selectEffect(effectNumber);
+        for (int i = 0; i < LIGHT_COUNT; i++) {
+            setLed(i, "#000000", 0, 0);
+        }
     }
 }
 
@@ -544,6 +546,7 @@ void Still() {
 		setLed(i, colors[i], whiteValues[i], brightnessValues[i]);
         if (i % 4 == 0) focalCheck(delayTime);
     }
+    delay(2000);
 }
 
 // 5 -> DONE?
@@ -904,7 +907,6 @@ void ThePianoMan() {
     }
 }
 
-
 // 1 -> DONE
 void Smolder() {
     if (focal == -1) {
@@ -1020,7 +1022,6 @@ void Smolder() {
         }
     }
 }
-
 
 // 0 -> DONE
 void StuckInABlender() {
@@ -1800,6 +1801,7 @@ void handleWebServer() {
             if (bodyComplete && requestBody.length() > 0) {
                 Serial.println("Processing JSON config...");
                 processJsonConfig(requestBody);
+				shelfOn = true;
                 client.println("{\"status\":\"Configuration updated successfully\"}");
             }
             else {
@@ -1814,6 +1816,24 @@ void handleWebServer() {
             client.stop();
             return;
         }
+        else if (requestHeader.indexOf("GET /api/status") != -1) {
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-type:application/json");
+            client.println("Connection: close");
+            client.println("Access-Control-Allow-Origin: *");
+            client.println();
+
+            StaticJsonDocument<128> doc;
+            doc["shelfOn"] = shelfOn;
+
+            String jsonResponse;
+            serializeJson(doc, jsonResponse);
+            client.println(jsonResponse);
+
+            client.stop();
+            return;
+        }
+
         else if (requestHeader.indexOf("GET /api/") != -1) {
             client.println("HTTP/1.1 200 OK");
             client.println("Content-type:application/json");
