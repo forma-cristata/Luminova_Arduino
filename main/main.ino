@@ -584,7 +584,7 @@ void Cortez() {
 				setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 				setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 
-                delay(delayTime * 2);
+                delay(delayTime);
 
                 ledIndex = (j + i + 1) % LIGHT_COUNT;
                 ledIndex2 = (j + i + 2) % LIGHT_COUNT;
