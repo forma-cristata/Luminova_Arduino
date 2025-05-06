@@ -337,7 +337,7 @@ void BerghainBitte() {
 		setLed(i, "#000000", 0, 0);
 	}
     if (focal == -1) {
-        for (int i = 4; i < COLOR_COUNT + 4; i++) {
+        for (int i = 0; i < COLOR_COUNT; i++) {
             int m = (i + 1) % COLOR_COUNT;
             int n = (i + 2) % COLOR_COUNT;
             int o = (i + 3) % COLOR_COUNT;
@@ -370,6 +370,7 @@ void BerghainBitte() {
                 }
             }
         }
+        delay(delayTime);
     }
     else {
         for (int i = 4; i < COLOR_COUNT + 4; i++) {
