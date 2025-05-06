@@ -85,8 +85,6 @@ void loop() {
 
     if (shelfOn) {
         selectEffect(effectNumber);
-
-		
     }
     else {
         for (int i = 0; i < LIGHT_COUNT; i++) {
@@ -911,11 +909,9 @@ void ThePianoMan() {
 void Smolder() {
     if (focal == -1) {
         for (int xy = 0; xy < COLOR_COUNT; xy++) {
-            // First pattern - moving through even indices
             for (int j = 0; j < LIGHT_COUNT; j += 2) {
                 if (effectNumber != 1) return;
 
-                // Apply LED with proper wrapping
                 setLed(j % LIGHT_COUNT, colors[xy], whiteValues[xy], brightnessValues[xy]);
 
                 int f = 0;
@@ -932,20 +928,20 @@ void Smolder() {
                 }
 
                 f = (xy + 3) % COLOR_COUNT;
-                // Ensure the next LED wraps properly
                 int nextLed = (j + 1) % LIGHT_COUNT;
+                delay(delayTime / 16);
                 setLed(nextLed, colors[f], whiteValues[f], brightnessValues[f]);
             }
 
-            // Second pattern - moving through odd indices with proper wrapping
             for (int j = 1; j < LIGHT_COUNT; j += 2) {
                 if (effectNumber != 1) return;
-
+				delay(delayTime / 16);
                 setLed(j % LIGHT_COUNT, colors[xy], whiteValues[xy], brightnessValues[xy]);
                 int f = (xy + 3) % COLOR_COUNT;
 
-                // Ensure previous LED wraps properly
                 int prevLed = (j - 1 + LIGHT_COUNT) % LIGHT_COUNT;
+                delay(delayTime / 16);
+
                 setLed(prevLed, colors[f], whiteValues[f], brightnessValues[f]);
             }
         }
@@ -954,12 +950,12 @@ void Smolder() {
         for (int xy = 0; xy < COLOR_COUNT; xy++) {
             int f = 0;
 
-            // First pattern - from focal point forward with wrapping
             for (int j = focal; j < focal + LIGHT_COUNT; j += 2) {
                 if (effectNumber != 1) return;
 
-                // Use modulo to wrap around the LED strip
                 int currentLed = j % LIGHT_COUNT;
+                delay(delayTime / 16);
+
                 setLed(currentLed, colors[xy], whiteValues[xy], brightnessValues[xy]);
 
                 if (currentLed == 8) {
@@ -976,15 +972,17 @@ void Smolder() {
 
                 f = (xy + 3) % COLOR_COUNT;
                 int nextLed = (j + 1) % LIGHT_COUNT;
+                delay(delayTime / 16);
+
                 setLed(nextLed, colors[f], whiteValues[f], brightnessValues[f]);
             }
 
-            // Second pattern - from focal point backward with wrapping
             for (int j = focal; j > focal - LIGHT_COUNT; j -= 2) {
                 if (effectNumber != 1) return;
 
-                // Calculate wrapped LED index
                 int currentLed = (j + LIGHT_COUNT) % LIGHT_COUNT;
+                delay(delayTime / 16);
+
                 setLed(currentLed, colors[xy], whiteValues[xy], brightnessValues[xy]);
 
                 if (currentLed == 8) {
@@ -1000,23 +998,25 @@ void Smolder() {
                 }
 
                 f = (xy + 3) % COLOR_COUNT;
-                // Handle negative indices by adding LIGHT_COUNT before modulo
                 int nextLed = ((j + 1) + LIGHT_COUNT) % LIGHT_COUNT;
+                delay(delayTime / 16);
+
                 setLed(nextLed, colors[f], whiteValues[f], brightnessValues[f]);
             }
 
-            // Front to back alternating pattern with proper wrapping
             for (int offset = 0; offset < LIGHT_COUNT; offset++) {
                 if (effectNumber != 1) return;
 
-                // Forward pattern
                 int forwardLed = (focal + offset) % LIGHT_COUNT;
                 if (offset % 2 == 0) {
+                    delay(delayTime / 16);
+
                     setLed(forwardLed, colors[xy], whiteValues[xy], brightnessValues[xy]);
                     f = (xy + 3) % COLOR_COUNT;
                     int prevLed = (forwardLed - 1 + LIGHT_COUNT) % LIGHT_COUNT;
-                    setLed(prevLed, colors[f], whiteValues[f], brightnessValues[f]);
                     delay(delayTime / 16);
+
+                    setLed(prevLed, colors[f], whiteValues[f], brightnessValues[f]);
                 }
             }
         }
