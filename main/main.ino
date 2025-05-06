@@ -865,6 +865,8 @@ void ThePianoMan() {
                 setLedChill(index2, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
                 setLedChill(index3, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
 
+                delay(2);
+
                 setLedChill(index1, "#000000", 0, 0);
                 setLedChill(index2, "#000000", 0, 0);
                 setLedChill(index3, "#000000", 0, 0);
