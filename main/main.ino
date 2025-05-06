@@ -745,32 +745,35 @@ void FeelTheFunk() {
     int ledsPerGroup = 1;
 
     if (focal == -1) {
-        focalCheck(delayTime / 12);
+        focalCheck(0);
 
         for (int strobe = 0; strobe < strobeCount1; strobe++) {
 
             for (int i = 0; i < ledsPerGroup; i++) {
                 if (effectNumber != 3) return;
+                delay(delayTime / 12);
 
                 int ledIndex = random(0, LIGHT_COUNT);
 				setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
 
+
             for (int i = 0; i < ledsPerGroup; i++) {
                 if (effectNumber != 3) return;
+                delay(delayTime / 12);
 
                 int ledIndex = random(0, LIGHT_COUNT);
 				setLedChill(ledIndex + 1, "#000000", 0, 0);
             }
         }
 
-        delay(delayTime / 12);
 
         for (int strobe = 0; strobe < strobeCount2; strobe++) {
 
             for (int i = 0; i < ledsPerGroup; i++) {
                 if (effectNumber != 3) return;
+                delay(delayTime / 12);
 
                 int ledIndex = random(0, LIGHT_COUNT);
 				setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
@@ -779,6 +782,7 @@ void FeelTheFunk() {
 
             for (int i = 0; i < ledsPerGroup; i++) {
                 if (effectNumber != 3) return;
+                delay(delayTime / 12);
 
                 int ledIndex = random(0, LIGHT_COUNT);
 				setLedChill(ledIndex + 1, "#000000", 0, 0);
