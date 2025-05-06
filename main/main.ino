@@ -11,8 +11,8 @@
 
 WiFiServer server(80);
 
-const char ssid[] = "friskyfishes";
-const char pass[] = "allthatjazz";
+const char ssid[] = "SHGuest";
+const char pass[] = "southhills";
 
 
 CRGB leds[NUM_LEDS];
@@ -653,7 +653,7 @@ void Decay() {
 
                         setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
 						delay(delayTime / 12);
-                        setLed((ledIndex), % LIGHT_COUNT "#000000", 0, 0);
+                        setLed((ledIndex) % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
                 for (int i = 0; i < ledsPerGroup; i++) {
