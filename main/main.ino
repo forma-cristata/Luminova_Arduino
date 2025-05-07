@@ -14,7 +14,6 @@ WiFiServer server(80);
 const char ssid[] = "SHGuest";
 const char pass[] = "southhills";
 
-
 CRGB leds[NUM_LEDS];
 
 int startupFocal = -1;
