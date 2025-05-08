@@ -245,12 +245,12 @@ void StateOfTrance() {
 
 // 10 -> DONE
 void Medusa() {
-    for (int kc = 0; kc < LIGHT_COUNT; kc++) {
-        for (int i = 0; i < LIGHT_COUNT; i++) {
-            setLed(i, colors[kc], whiteValues[kc], brightnessValues[kc]);
-        }
+    if (focal != -1) {
+        for (int kc = 0; kc < LIGHT_COUNT; kc++) {
+            for (int i = 0; i < LIGHT_COUNT; i++) {
+                setLed(i, colors[kc], whiteValues[kc], brightnessValues[kc]);
+            }
 
-        if (focal != -1) {
             for (int i = 1; i < COLOR_COUNT; i++) {
                 for (int j = 0; j < LIGHT_COUNT / 2; j++) {
                     if (effectNumber != 10) return;
@@ -269,7 +269,13 @@ void Medusa() {
                 }
             }
         }
-        else {
+    }
+    else {
+		for (int kc = 0; kc < LIGHT_COUNT; kc++) {
+			for (int i = 0; i < LIGHT_COUNT; i++) {
+				if (effectNumber != 10) return;
+				setLed(i, colors[kc], whiteValues[kc], brightnessValues[kc]);
+			}
             for (int i = 0; i < COLOR_COUNT; i++) {
                 for (int j = 0; j < LIGHT_COUNT; j++) {
                     if (effectNumber != 10) return;
@@ -281,7 +287,7 @@ void Medusa() {
 
                     setLed(j, colors[kc], whiteValues[kc], brightnessValues[kc]);
                 }
-            }
+            }                               
         }
     }
 }
