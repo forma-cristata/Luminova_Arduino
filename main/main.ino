@@ -11,8 +11,8 @@
 
 WiFiServer server(80);
 
-const char ssid[] = "SHGuest";
-const char pass[] = "southhills";
+const char ssid[] = "friskyfishes";
+const char pass[] = "allthatjazz";
 
 CRGB leds[NUM_LEDS];
 
@@ -137,12 +137,14 @@ void focalCheck(float delayTime) {
         case A0: focalPoint = 15; break;
         }
     }
-	focal = focalPoint;
+	//focal = focalPoint;
+    focal = -1; // change for deployment TODO Use the line above instead this is just to test settings
+    
     Serial.print("Focal point: ");
     Serial.println(focalPoint);
 }
 
-// 11 -> DONE?
+// 11 -> DONE
 // TODO: Does not rotate around the colors
 void StateOfTrance() {
     int sc1 = 4; 
