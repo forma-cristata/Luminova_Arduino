@@ -98,8 +98,8 @@ void focalCheck(float delayTime) {
     const byte HALL_PINS[] = { A0, A1, A2, A3, A4 }; 
     const int NUM_PINS = 5;
 
-    const int BASE_READINGS[] = { 495, 522, 505, 502, 523 };
-    const float THRESHOLDS[] = { 3.0, 3.0, 4.0, 3.0, 3.0 };             
+    const int BASE_READINGS[] = { 502, 510, 506, 500, 515 };
+    const float THRESHOLDS[] = { 3.0, 2.9, 2.6, 2.5, 2.5 };             
 
 
     float highestVal = 0;
@@ -137,11 +137,10 @@ void focalCheck(float delayTime) {
         case A0: focalPoint = 15; break;
         }
     }
-	//focal = focalPoint;
-    focal = -1; // change for deployment TODO Use the line above instead this is just to test settings
-    
+	focal = focalPoint;
+
     Serial.print("Focal point: ");
-    Serial.println(focalPoint);
+    Serial.println(focal);
 }
 
 // 11 -> DONE
