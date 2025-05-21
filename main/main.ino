@@ -1047,7 +1047,7 @@ void StuckInABlender() {
             if (effectNumber != 0) return;
 
             int colorIndex = (i + colorOffset) % COLOR_COUNT;
-            delay(delayTime / 8);
+            delay(delayTime);
 
 			setLed(i, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
 		}
