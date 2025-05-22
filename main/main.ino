@@ -361,19 +361,19 @@ void BerghainBitte() {
                     if (effectNumber != 8) return;
 
 					setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
-                    delay(delayTime);
+                    delay(delayTime*2);
 					setLed(j, "#000000", 0, 0);
 					setLed(k, colors[m], whiteValues[m], brightnessValues[m]);
-                    delay(delayTime);
+                    delay(delayTime*2);
 					setLed(k, "#000000", 0, 0);
 					setLed(l, colors[n], whiteValues[n], brightnessValues[n]);
-                    delay(delayTime);
+                    delay(delayTime*2);
 					setLed(l, "#000000", 0, 0);
 					setLed(y, colors[o], whiteValues[o], brightnessValues[o]);
-                    delay(delayTime);
+                    delay(delayTime*2);
 					setLed(y, "#000000", 0, 0);
 					setLed(z, colors[p], whiteValues[p], brightnessValues[p]);
-                    focalCheck(delayTime);
+                    focalCheck(delayTime*2);
 					setLed(z, "#000000", 0, 0);
                 }
             }
