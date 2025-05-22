@@ -753,43 +753,52 @@ void FeelTheFunk() {
     int ledsPerGroup = 4;
 
     if (focal == -1) {
-        for (int strobe = 0; strobe < strobeCount1; strobe++) {
-            delay(delayTime * 8);
+        for(int colorer = 0; colorer < COLOR_COUNT, colorer++) {
+            for (int strobe = 0; strobe < strobeCount1; strobe++) {
+                delay(delayTime * 12);
 
-            for (int i = 0; i < ledsPerGroup; i++) {
-                if (effectNumber != 3) return;
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    if (effectNumber != 3) return;
 
-                int ledIndex = random(0, LIGHT_COUNT);
-				setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                    int ledIndex = random(0, LIGHT_COUNT);
+                    setLedChill(ledIndex + 1, colors[(ledIndex + colorer) % COLOR_COUNT], whiteValues[(ledIndex + colorer) % COLOR_COUNT], brightnessValues[(ledIndex + colorer) % COLOR_COUNT]);
+                    delay(delayTime);
+                }
+
+                delay(delayTime * 12);
+
+
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    if (effectNumber != 3) return;
+                    int ledIndex = random(0, LIGHT_COUNT);
+                    setLedChill(ledIndex + 1, "#000000", 0, 0);
+                    delay(delayTime);
+
+                }
             }
 
-            delay(delayTime * 8);
+
+            for (int strobe = 0; strobe < strobeCount2; strobe++) {
+                delay(delayTime * 12);
+
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    if (effectNumber != 3) return;
+                    int ledIndex = random(0, LIGHT_COUNT);
+                    setLedChill(ledIndex + 1, colors[(ledIndex + colorer) % COLOR_COUNT], whiteValues[(ledIndex + colorer) % COLOR_COUNT], brightnessValues[(ledIndex + colorer) % COLOR_COUNT]);
+                    delay(delayTime);
+
+                }
+
+                delay(delayTime * 12);
 
 
-            for (int i = 0; i < ledsPerGroup; i++) {
-                if (effectNumber != 3) return;
-                int ledIndex = random(0, LIGHT_COUNT);
-				setLedChill(ledIndex + 1, "#000000", 0, 0);
-            }
-        }
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    if (effectNumber != 3) return;
+                    int ledIndex = random(0, LIGHT_COUNT);
+                    setLedChill(ledIndex + 1, "#000000", 0, 0);
+                    delay(delayTime);
 
-
-        for (int strobe = 0; strobe < strobeCount2; strobe++) {
-            delay(delayTime * 8);
-
-            for (int i = 0; i < ledsPerGroup; i++) {
-                if (effectNumber != 3) return;
-                int ledIndex = random(0, LIGHT_COUNT);
-				setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-            }
-
-            delay(delayTime * 8);
-
-
-            for (int i = 0; i < ledsPerGroup; i++) {
-                if (effectNumber != 3) return;
-                int ledIndex = random(0, LIGHT_COUNT);
-				setLedChill(ledIndex + 1, "#000000", 0, 0);
+                }
             }
         }
         focalCheck(0);
