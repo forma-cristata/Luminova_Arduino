@@ -285,8 +285,8 @@ void Medusa() {
 
                     setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
 
-                    if ((i % 4 == 0) && (j % 4 == 0)) focalCheck(delayTime);
-                    else delay(delayTime);
+                    if ((i % 4 == 0) && (j % 4 == 0)) focalCheck(delayTime * 2);
+                    else delay(delayTime * 2);
 
                     setLed(j, colors[kc], whiteValues[kc], brightnessValues[kc]);
                 }
