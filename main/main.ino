@@ -378,7 +378,7 @@ void BerghainBitte() {
                 }
             }
         }
-        delay(delayTime);
+        focalCheck(delayTime);
     }
     else {
         for (int i = 4; i < COLOR_COUNT + 4; i++) {
@@ -569,7 +569,7 @@ void Cortez() {
 				setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 				setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
             
-                delay(delayTime);
+                delay(delayTime * 2);
 
                 ledIndex = (focal + i + 1) % LIGHT_COUNT;
                 ledIndex2 = (focal - i - 1 + LIGHT_COUNT) % LIGHT_COUNT;
@@ -577,8 +577,8 @@ void Cortez() {
 				setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 				setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 
-                if ((j % 4 == 0) && (i % 4 == 0)) focalCheck(delayTime);
-                else delay(delayTime);
+                if ((j % 4 == 0) && (i % 4 == 0)) focalCheck(delayTime * 2);
+                else delay(delayTime * 2);
             }
         }
     }
