@@ -866,7 +866,7 @@ void ThePianoMan() {
         for (int x = 0; x < COLOR_COUNT * 2; x++) {
             focalCheck(0.0);
 
-            for (int i = 0; i < delayTime / 2; i++) {
+            for (int i = 0; i < 2; i++) {
                 if (effectNumber != 2) return;
 
                 // Apply modulo to ensure LED indices wrap around properly
@@ -880,18 +880,20 @@ void ThePianoMan() {
                 if (index3 < 0) index3 += LIGHT_COUNT;
 
                 setLedChill(index1, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
-                setLedChill(index2, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
-                setLedChill(index3, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
-
-                delay(2);
-
+                delay(delayTime * 4);
                 setLedChill(index1, "#000000", 0, 0);
+
+                setLedChill(index2, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
+                delay(delayTime * 4);
                 setLedChill(index2, "#000000", 0, 0);
+
+                setLedChill(index3, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
+                delay(delayTime * 4);
                 setLedChill(index3, "#000000", 0, 0);
 
-                delay(2);
             }
         }
+        focalCheck(delayTime);
     }
     else {
         // Create a new pattern for focal-based operation that wraps properly
