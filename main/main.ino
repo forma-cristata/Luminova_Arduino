@@ -146,52 +146,35 @@ void focalCheck(float delayTime) {
 // 11 -> DONE
 // TODO: Does not rotate around the colors
 void StateOfTrance() {
-    int sc1 = 4; 
+    int sc1 = 2; 
     int sc2 = 2;
-    int ls = 3;
+    int ls = 6;
     if (focal == -1) {
         for (int j = 0; j < LIGHT_COUNT; j++) {
             for (int k = 0; k < sc1; k++) {
                 if (effectNumber != 11) return;
                 for (int i = 0; i < ls; i++) {
                     int li = j + i;
-                    if (li < LIGHT_COUNT) { 
-                        setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
-                    }
-                }
+                    setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
+                    delay(delayTime * 4);
+                    setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                    delay(delayTime * 4)
 
-                delay(delayTime);
-
-                for (int i = 0; i < ls; i++) {
-                    int ledIndex = j + i;
-                    if (ledIndex < LIGHT_COUNT) { 
-                        setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
-                    }
                 }
-
-                if ((j % 4 == 0) && (k % 4 == 0)) {
-                    focalCheck(delayTime);
-                }
-                else delay(delayTime);
             }
 
             for (int strobe = 0; strobe < sc2; strobe++) {
                 if (effectNumber != 11) return;
 
                 for (int i = 0; i < ls; i++) {
-                    int ledIndex = j + i;
-                    if (ledIndex < LIGHT_COUNT) { 
-                        setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                    }
+                    int li = j + i;
+                    setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
+                    delay(delayTime * 4);
+                    setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                    delay(delayTime * 4)
+
                 }
-                delay(delayTime);
-                for (int i = 0; i < ls; i++) {
-                    int ledIndex = j + i;
-                    if (ledIndex < LIGHT_COUNT) {
-                        setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
-                    }
-                }
-                delay(delayTime);
+       
             }
         }
     }
