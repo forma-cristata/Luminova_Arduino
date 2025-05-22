@@ -312,12 +312,12 @@ void LapisLazuli() {
                 int offset = (i + j * 2) % LIGHT_COUNT;
 				setLed(offset, colors[colorIndex1], whiteValues[colorIndex1], brightnessValues[colorIndex1]);
                 
-                delay(delayTime);
+                delay(delayTime * 2);
 
                 offset = (i + j * 2 + 8) % LIGHT_COUNT;
 				setLed(offset, colors[colorIndex2], whiteValues[colorIndex2], brightnessValues[colorIndex2]);
-                if (i % 4 == 0) focalCheck(delayTime);
-                else delay(delayTime);
+                if (i % 4 == 0) focalCheck(delayTime * 2);
+                else delay(delayTime * 2);
             }
         }
     }
