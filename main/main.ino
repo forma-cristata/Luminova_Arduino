@@ -143,7 +143,7 @@ void focalCheck(float delayTime) {
     Serial.println(focal);
 }
 
-// 11 -> DONE
+// 11 -> Trance
 // TODO: Does not rotate around the colors
 void StateOfTrance() {
     int sc1 = 2; 
@@ -227,7 +227,7 @@ void StateOfTrance() {
     }
 }
 
-// 10 -> DONE
+// 10 -> TraceOne
 void Medusa() {
     if (focal != -1) {
         for (int kc = 0; kc < LIGHT_COUNT; kc++) {
@@ -278,7 +278,7 @@ void Medusa() {
     }
 }
 
-// 9 -> DONE?
+// 9 -> TraceMany
 void LapisLazuli() {
     for (int i = 0; i < LIGHT_COUNT; i++) {
 		setLed(i, colors[0], whiteValues[0], brightnessValues[0]);
@@ -322,7 +322,7 @@ void LapisLazuli() {
     }
 }
 
-// 8 -> DONE
+// 8 -> Techno
 void BerghainBitte() {
 	for (int i = 0; i < LIGHT_COUNT; i++) {
 		setLed(i, "#000000", 0, 0);
@@ -491,7 +491,7 @@ void BerghainBitte() {
     }
 }
 
-// 7 -> DONE
+// 7 -> Strobe Change
 void TheUnderground() {
     if (focal == -1) {
         for (int i = 0; i < COLOR_COUNT; i++) {
@@ -532,7 +532,7 @@ void TheUnderground() {
     }
 }
 
-// 6 -> DONE
+// 6 -> Still
 void Still() {
     for (int i = 0; i < LIGHT_COUNT; i++) {
 		setLed(i, colors[i], whiteValues[i], brightnessValues[i]);
@@ -541,7 +541,7 @@ void Still() {
     delay(2000);
 }
 
-// 5 -> DONE?
+// 5 -> Progressive
 void Cortez() {
     if (focal != -1) {
         for (int j = 0; j < COLOR_COUNT; j++) {
@@ -593,7 +593,7 @@ void Cortez() {
     }
 }
 
-// 4 -> DONE
+// 4 -> Mold
 void Decay() {
     int strobeCount1 = 2;
     int strobeCount2 = 2;
@@ -731,7 +731,7 @@ void Decay() {
     }
 }
 
-// 3 -> DONE?
+// 3 -> Funky
 void FeelTheFunk() {
     int strobeCount1 = 12;
     int strobeCount2 = 12;
@@ -840,7 +840,7 @@ void FeelTheFunk() {
     }
 }
 
-// 2 -> DONE?
+// 2 -> Comfort Song
 void ThePianoMan() {
     // Create pattern indices that can wrap around the LIGHT_COUNT
     int patternIndices[] = { 1, 2, 3, 2, 4, 3, 2, 1, 0, 1, 2, 1, 3, 2, 1, 0 };
@@ -912,7 +912,7 @@ void ThePianoMan() {
     }
 }
 
-// 1 -> DONE
+// 1 -> Christmas
 void Smolder() {
     if (focal == -1) {
         for (int xy = 0; xy < COLOR_COUNT; xy++) {
@@ -1030,7 +1030,7 @@ void Smolder() {
     }
 }
 
-// 0 -> DONE
+// 0 -> Blender
 void StuckInABlender() {
     unsigned long currentTime = millis();
 	int colorOffset = (currentTime / 100) % COLOR_COUNT;
