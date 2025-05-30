@@ -158,7 +158,7 @@ void StateOfTrance() {
                     setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
                     delay(delayTime * 4);
                     setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
-                    delay(delayTime * 4)
+                    delay(delayTime * 4);
 
                 }
             }
@@ -171,7 +171,7 @@ void StateOfTrance() {
                     setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
                     delay(delayTime * 4);
                     setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
-                    delay(delayTime * 4)
+                    delay(delayTime * 4);
 
                 }
        
@@ -497,20 +497,20 @@ void TheUnderground() {
         for (int i = 0; i < COLOR_COUNT; i++) {
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
                 int offset = (i + j * 2) % LIGHT_COUNT;
-                for (int k = 0; k < 2; k++) {
-                    if (effectNumber != 7) return;
+                int colInd1 = ((i + 1) % (COLOR_COUNT / 2));
+				int colInd2 = ((i + 2) % COLOR_COUNT);
+                if (effectNumber != 7) return;
 
-					setLed(offset, "#000000", 0, 0);
-                    delay(delayTime);
-                    setLed(offset, colors[i], whiteValues[i], brightnessValues[i]);
-                    
+                delay(delayTime);
+                setLed(offset, colors[colInd1], whiteValues[colInd1], brightnessValues[colInd1]);
+                delay(delayTime * 2);
+                offset = (i + j * 2 + 8) % LIGHT_COUNT;
+                setLed(offset, colors[colInd2], whiteValues[colInd2], brightnessValues[colInd2]);
+				delay(delayTime * 2);
                 }
-                focalCheck(delayTime * 2);
+                focalCheck(0);
             }
-            delay(delayTime * 2);
-
         }
-    }
     else {
         for (int i = 0; i < COLOR_COUNT; i++) {
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
@@ -738,7 +738,7 @@ void FeelTheFunk() {
     int ledsPerGroup = 4;
 
     if (focal == -1) {
-        for(int colorer = 0; colorer < COLOR_COUNT, colorer++) {
+        for(int colorer = 0; colorer < COLOR_COUNT; colorer++) {
             for (int strobe = 0; strobe < strobeCount1; strobe++) {
                 delay(delayTime * 12);
 
