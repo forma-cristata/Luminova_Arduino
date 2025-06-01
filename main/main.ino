@@ -41,7 +41,7 @@ String startupColors[] = {
 
 int focal = -1;
 bool shelfOn = false;
-float delayTime = 0.0;
+int delayTime = 0;
 int whiteValues[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int brightnessValues[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int effectNumber = 0;
@@ -1036,6 +1036,7 @@ void StuckInABlender() {
 	int colorOffset = (currentTime / 100) % COLOR_COUNT;
 
     if (focal == -1) {
+        focalCheck(0);
 		for (int i = 0; i < LIGHT_COUNT; i++) {
             if (effectNumber != 0) return;
 
@@ -1048,7 +1049,6 @@ void StuckInABlender() {
     else {
 		for (int i = 0; i < LIGHT_COUNT/2; i++) {
             if (effectNumber != 0) return;
-
 			int led1 = focal - i;
 			int led2 = focal + i;
 
@@ -1917,7 +1917,7 @@ void processJsonConfig(const String& jsonString) {
 
     // Update delayTime if present
     if (doc.containsKey("delayTime")) {
-        delayTime = doc["delayTime"];
+        delayTime = doc["delayTime"].as<int>();
     }
 
     // Update effectNumber if present
