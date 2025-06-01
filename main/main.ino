@@ -849,7 +849,7 @@ void ThePianoMan() {
 
     if (focal == -1) {
         for (int x = 0; x < COLOR_COUNT * 2; x++) {
-            focalCheck(0.0);
+            focalCheck(0);
 
             for (int i = 0; i < 2; i++) {
                 if (effectNumber != 2) return;
@@ -873,12 +873,11 @@ void ThePianoMan() {
                 setLedChill(index2, "#000000", 0, 0);
 
                 setLedChill(index3, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
-                delay(delayTime * 4);
+                focalCheck(delayTime * 4);
                 setLedChill(index3, "#000000", 0, 0);
 
             }
         }
-        focalCheck(delayTime);
     }
     else {
         // Create a new pattern for focal-based operation that wraps properly
