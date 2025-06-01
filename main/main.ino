@@ -916,12 +916,12 @@ void ThePianoMan() {
 void Smolder() {
     if (focal == -1) {
         for (int xy = 0; xy < COLOR_COUNT; xy++) {
+            int f = 0;
             for (int j = 0; j < LIGHT_COUNT; j += 2) {
                 if (effectNumber != 1) return;
-
+                delay(delayTime / 16);
                 setLed(j % LIGHT_COUNT, colors[xy], whiteValues[xy], brightnessValues[xy]);
 
-                int f = 0;
                 if (j == 8) {
                     f = (xy + 1) % COLOR_COUNT;
                     focalCheck(delayTime / 16);
@@ -936,20 +936,21 @@ void Smolder() {
 
                 f = (xy + 3) % COLOR_COUNT;
                 int nextLed = (j + 1) % LIGHT_COUNT;
-                delay(delayTime / 16);
+                delay(delayTime * 3);
                 setLed(nextLed, colors[f], whiteValues[f], brightnessValues[f]);
             }
 
             for (int j = 1; j < LIGHT_COUNT; j += 2) {
                 if (effectNumber != 1) return;
-				delay(delayTime / 16);
+				focalCheck(delayTime * 3);
                 setLed(j % LIGHT_COUNT, colors[xy], whiteValues[xy], brightnessValues[xy]);
                 int f = (xy + 3) % COLOR_COUNT;
 
                 int prevLed = (j - 1 + LIGHT_COUNT) % LIGHT_COUNT;
-                delay(delayTime / 16);
 
                 setLed(prevLed, colors[f], whiteValues[f], brightnessValues[f]);
+                delay(delayTime * 3);
+
             }
         }
     }
