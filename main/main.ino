@@ -497,19 +497,16 @@ void TheUnderground() {
         for (int i = 0; i < COLOR_COUNT; i++) {
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
                 int offset = (i + j * 2) % LIGHT_COUNT;
-                int colInd1 = ((i + 1) % (COLOR_COUNT / 2));
-				int colInd2 = ((i + 2) % COLOR_COUNT);
                 if (effectNumber != 7) return;
-
-                delay(delayTime);
-                setLed(offset, colors[colInd1], whiteValues[colInd1], brightnessValues[colInd1]);
-                delay(delayTime * 2);
-                offset = (i + j * 2 + 8) % LIGHT_COUNT;
-                setLed(offset, colors[colInd2], whiteValues[colInd2], brightnessValues[colInd2]);
-				delay(delayTime * 2);
+                
+                for (int k = 0; k < 4; k++) {
+					setLed(offset, "#000000", 0, 0);
+                    delay(delayTime);
+					setLed(offset, colors[i], whiteValues[i], brightnessValues[i]);
                 }
-                focalCheck(0);
+                delay(delayTime * 2);
             }
+            focalCheck(delayTime * 2);
         }
     else {
         for (int i = 0; i < COLOR_COUNT; i++) {
