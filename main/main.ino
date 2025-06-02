@@ -287,8 +287,9 @@ void LapisLazuli() {
     }
 
     if (focal == -1) {
-        focalCheck(0);
         for (int i = 0; i < LIGHT_COUNT; i++) {
+            focalCheck(0);
+
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
                 if (effectNumber != 9) return;
 
@@ -308,6 +309,8 @@ void LapisLazuli() {
     }
     else {
         for (int i = 0; i < LIGHT_COUNT; i++) {
+            focalCheck(0);
+
             int y = 15;
             for (int j = 0; j < focal; j++) {
                 if (effectNumber != 9) return;
@@ -321,7 +324,7 @@ void LapisLazuli() {
                 if (y >= focal) {
                     setLed(offset2, colors[colorIndex1], whiteValues[colorIndex1], brightnessValues[colorIndex1]);
                 }
-                focalCheck(delayTime * 2);
+                delay(delayTime * 2);
 
                 offset = (i + j * 2 + 8) % LIGHT_COUNT;
                 offset2 = (i + y * 2 + 8) % LIGHT_COUNT;
@@ -329,8 +332,7 @@ void LapisLazuli() {
                 if (y >= focal) {
                     setLed(offset2, colors[colorIndex2], whiteValues[colorIndex2], brightnessValues[colorIndex2]);
                 }
-                if (i % 4 == 0) focalCheck(delayTime * 2);
-                else delay(delayTime * 2);
+                delay(delayTime * 2);
                 y--;
             }
         }
@@ -359,19 +361,19 @@ void BerghainBitte() {
                     if (effectNumber != 8) return;
 
 					setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
-                    delay(delayTime*2);
+                    delay(delayTime);
 					setLed(j, "#000000", 0, 0);
 					setLed(k, colors[m], whiteValues[m], brightnessValues[m]);
-                    delay(delayTime*2);
+                    delay(delayTime);
 					setLed(k, "#000000", 0, 0);
 					setLed(l, colors[n], whiteValues[n], brightnessValues[n]);
-                    delay(delayTime*2);
+                    delay(delayTime);
 					setLed(l, "#000000", 0, 0);
 					setLed(y, colors[o], whiteValues[o], brightnessValues[o]);
-                    delay(delayTime*2);
+                    delay(delayTime);
 					setLed(y, "#000000", 0, 0);
 					setLed(z, colors[p], whiteValues[p], brightnessValues[p]);
-                    focalCheck(delayTime*2);
+                    focalCheck(delayTime);
 					setLed(z, "#000000", 0, 0);
                 }
             }
@@ -379,129 +381,79 @@ void BerghainBitte() {
         focalCheck(delayTime);
     }
     else {
-        for (int i = 4; i < COLOR_COUNT + 4; i++) {
+        for (int i = 0; i < COLOR_COUNT; i++) {
             int m = (i + 1) % COLOR_COUNT;
             int n = (i + 2) % COLOR_COUNT;
             int o = (i + 3) % COLOR_COUNT;
             int p = (i + 4) % COLOR_COUNT;
+            
+            int zz = 0;
 
-            int jb = focal;
-
-            for (int j = focal; j >= 0; j--) {
-
+            for (int j = 15; j >= focal; j--) {
                 int k = (j + 1) % LIGHT_COUNT;
+                int k2 = (zz + 1) % LIGHT_COUNT;
                 int l = (j + 2) % LIGHT_COUNT;
+                int l2 = (zz + 2) % LIGHT_COUNT;
                 int y = (j + 3) % LIGHT_COUNT;
+                int y2 = (zz + 3) % LIGHT_COUNT;
                 int z = (j + 4) % LIGHT_COUNT;
-
-                int kb = (jb + 1) % LIGHT_COUNT;
-                int lb = (jb + 2) % LIGHT_COUNT;
-                int yb = (jb + 3) % LIGHT_COUNT;
-                int zb = (jb + 4) % LIGHT_COUNT;
+                int z2 = (zz + 4) % LIGHT_COUNT;
 
                 for (int x = 0; x < 2; x++) {
                     if (effectNumber != 8) return;
 
-					setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
-					setLed(jb, colors[i], whiteValues[i], brightnessValues[i]);
+                    setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
+                    if (zz < focal) {
+                        setLed(zz, colors[i], whiteValues[i], brightnessValues[i]);
+                    }
+                    delay(delayTime);
+                    setLed(j, "#000000", 0, 0);
+                    if (zz < focal) {
+                        setLed(zz, "#000000", 0, 0);
+                    }
+                    setLed(k, colors[m], whiteValues[m], brightnessValues[m]);
 
-                    delay(delayTime * 2);
-
-					setLed(j, "#000000", 0, 0);
-					setLed(jb, "#000000", 0, 0);
-
-					setLed(k, colors[m], whiteValues[m], brightnessValues[m]);
-					setLed(kb, colors[m], whiteValues[m], brightnessValues[m]);
-
-                    delay(delayTime * 2);
-
-					setLed(k, "#000000", 0, 0);
-					setLed(kb, "#000000", 0, 0);
-
-					setLed(l, colors[n], whiteValues[n], brightnessValues[n]);
-					setLed(lb, colors[n], whiteValues[n], brightnessValues[n]);
-
-                    delay(delayTime * 2);
-
-					setLed(l, "#000000", 0, 0);
-					setLed(lb, "#000000", 0, 0);
-
-					setLed(y, colors[o], whiteValues[o], brightnessValues[o]);
-					setLed(yb, colors[o], whiteValues[o], brightnessValues[o]);
-
-                    delay(delayTime * 2);
-
-					setLed(y, "#000000", 0, 0);
-					setLed(yb, "#000000", 0, 0);
-
-					setLed(z, colors[p], whiteValues[p], brightnessValues[p]);
-					setLed(zb, colors[p], whiteValues[p], brightnessValues[p]);
-
-                    focalCheck(delayTime * 2);
-
-					setLed(z, "#000000", 0, 0);
-					setLed(zb, "#000000", 0, 0);
-                    jb++;
+                    if (zz < focal) {
+                        setLed(k2, colors[m], whiteValues[m], brightnessValues[m]);
+                    }
+                    delay(delayTime);
+                    setLed(k, "#000000", 0, 0);
+                    if (zz < focal) {
+                        setLed(k2, "#000000", 0, 0);
+                    }
+                    setLed(l, colors[n], whiteValues[n], brightnessValues[n]);
+                    if (zz < focal) {
+                        setLed(l2, colors[n], whiteValues[n], brightnessValues[n]);
+                    }
+                    delay(delayTime);
+                    setLed(l, "#000000", 0, 0);
+                    if (zz < focal) {
+                        setLed(l2, "#000000", 0, 0);
+                    }
+                    setLed(y, colors[o], whiteValues[o], brightnessValues[o]);
+                    if (zz < focal) {
+                        setLed(y2, colors[o], whiteValues[o], brightnessValues[o]);
+                    }
+                    delay(delayTime);
+                    setLed(y, "#000000", 0, 0);
+                    if (zz < focal) {
+                        setLed(y2, "#000000", 0, 0);
+                    }
+                    setLed(z, colors[p], whiteValues[p], brightnessValues[p]);
+                    if (zz < focal) {
+                        setLed(z2, colors[p], whiteValues[p], brightnessValues[p]);
+                    }
+                    focalCheck(delayTime);
+                    setLed(z, "#000000", 0, 0);
+                    if (zz < focal) {
+                        setLed(z2, "#000000", 0, 0);
+                    }
                 }
+                zz++;
             }
 
-            for (int j = 0; j < focal; j++) {
-                int k = (j + 1) % LIGHT_COUNT;
-                int l = (j + 2) % LIGHT_COUNT;
-                int y = (j + 3) % LIGHT_COUNT;
-                int z = (j + 4) % LIGHT_COUNT;
-
-                int kb = (jb + 1) % LIGHT_COUNT;
-                int lb = (jb + 2) % LIGHT_COUNT;
-                int yb = (jb + 3) % LIGHT_COUNT;
-                int zb = (jb + 4) % LIGHT_COUNT;
-
-                for (int x = 0; x < 2; x++) {
-                    if (effectNumber != 8) return;
-
-					setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
-					setLed(jb, colors[i], whiteValues[i], brightnessValues[i]);
-
-                    delay(delayTime * 2);
-
-					setLed(j, "#000000", 0, 0);
-					setLed(jb, "#000000", 0, 0);
-
-					setLed(k, colors[m], whiteValues[m], brightnessValues[m]);
-					setLed(kb, colors[m], whiteValues[m], brightnessValues[m]);
-
-                    delay(delayTime * 2);
-
-					setLed(k, "#000000", 0, 0);
-					setLed(kb, "#000000", 0, 0);
-
-					setLed(l, colors[n], whiteValues[n], brightnessValues[n]);
-					setLed(lb, colors[n], whiteValues[n], brightnessValues[n]);
-
-                    delay(delayTime * 2);
-
-					setLed(l, "#000000", 0, 0);
-					setLed(lb, "#000000", 0, 0);
-
-					setLed(y, colors[o], whiteValues[o], brightnessValues[o]);
-					setLed(yb, colors[o], whiteValues[o], brightnessValues[o]);
-
-                    delay(delayTime * 2);
-
-					setLed(y, "#000000", 0, 0);
-					setLed(yb, "#000000", 0, 0);
-
-					setLed(z, colors[p], whiteValues[p], brightnessValues[p]);
-					setLed(zb, colors[p], whiteValues[p], brightnessValues[p]);
-
-                    delay(delayTime * 2);
-
-					setLed(z, "#000000", 0, 0);
-					setLed(zb, "#000000", 0, 0);
-                }
-                jb++;
-            }
         }
+        focalCheck(delayTime);
 
     }
 }
