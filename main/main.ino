@@ -229,7 +229,28 @@ void StateOfTrance() {
 
 // 10 -> TraceOne
 void Medusa() {
-    if (focal != -1) {
+    if (focal == -1) 
+    {
+        for (int kc = 0; kc < LIGHT_COUNT; kc++) {
+            for (int i = 0; i < LIGHT_COUNT; i++) {
+                if (effectNumber != 10) return;
+                setLed(i, colors[kc], whiteValues[kc], brightnessValues[kc]);
+            }
+            for (int i = 0; i < COLOR_COUNT; i++) {
+                for (int j = 0; j < LIGHT_COUNT; j++) {
+                    if (effectNumber != 10) return;
+
+                    setLed(j, colors[(i + j) % COLOR_COUNT], whiteValues[(i + j) % COLOR_COUNT], brightnessValues[(i + j) % COLOR_COUNT]);
+
+                    if ((i % 4 == 0) && (j % 4 == 0)) focalCheck(delayTime * 2);
+                    else delay(delayTime * 2);
+
+                    setLed(j, colors[(kc + j) % COLOR_COUNT], whiteValues[(kc + j) % COLOR_COUNT], brightnessValues[(kc + j) % COLOR_COUNT]);
+                }
+            }
+        }
+    }
+    else {
         for (int kc = 0; kc < LIGHT_COUNT; kc++) {
             for (int i = 0; i < LIGHT_COUNT; i++) {
                 if (effectNumber != 10) return;
@@ -255,27 +276,7 @@ void Medusa() {
                 }
             }
         }
-    }
-    else {
-		for (int kc = 0; kc < LIGHT_COUNT; kc++) {
-			for (int i = 0; i < LIGHT_COUNT; i++) {
-				if (effectNumber != 10) return;
-				setLed(i, colors[kc], whiteValues[kc], brightnessValues[kc]);
-			}
-            for (int i = 0; i < COLOR_COUNT; i++) {
-                for (int j = 0; j < LIGHT_COUNT; j++) {
-                    if (effectNumber != 10) return;
-
-                    setLed(j, colors[i], whiteValues[i], brightnessValues[i]);
-
-                    if ((i % 4 == 0) && (j % 4 == 0)) focalCheck(delayTime * 2);
-                    else delay(delayTime * 2);
-
-                    setLed(j, colors[kc], whiteValues[kc], brightnessValues[kc]);
-                }
-            }                               
-        }
-    }
+    } 
 }
 
 // 9 -> TraceMany
@@ -295,7 +296,7 @@ void LapisLazuli() {
                 int offset = (i + j * 2) % LIGHT_COUNT;
 				setLed(offset, colors[colorIndex1], whiteValues[colorIndex1], brightnessValues[colorIndex1]);
                 
-                delay(delayTime * 2);
+                focalCheck(delayTime * 2);
 
                 offset = (i + j * 2 + 8) % LIGHT_COUNT;
 				setLed(offset, colors[colorIndex2], whiteValues[colorIndex2], brightnessValues[colorIndex2]);
