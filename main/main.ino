@@ -462,37 +462,42 @@ void BerghainBitte() {
 void TheUnderground() {
     if (focal == -1) {
         for (int i = 0; i < COLOR_COUNT; i++) {
+            delay(delayTime);
+
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
                 int offset = (i + j * 2) % LIGHT_COUNT;
                 if (effectNumber != 7) return;
 
-                for (int k = 0; k < 4; k++) {
+                for (int k = 0; k < 2; k++) {
                     setLed(offset, "#000000", 0, 0);
-                    delay(delayTime);
                     setLed(offset, colors[i], whiteValues[i], brightnessValues[i]);
                 }
-                delay(delayTime * 2);
             }
-            focalCheck(delayTime * 2);
+            focalCheck(0);
         }
     }
     else {
         for (int i = 0; i < COLOR_COUNT; i++) {
-            for (int j = 0; j < LIGHT_COUNT / 2; j++) {
-                int position1 = (focal + 1 + (i + j * 2) % LIGHT_COUNT) % LIGHT_COUNT;
-                int position2 = (16 + focal - (i + j * 2) % LIGHT_COUNT) % LIGHT_COUNT;
-                for (int k = 0; k < delayTime * 2; k++) {
-                    if (effectNumber != 7) return;
+            int j2 = 15;
+            delay(delayTime);
 
-					setLed(position1, "#000000", 0, 0);
-					setLed(position2, "#000000", 0, 0);
-                    delay(3);
-					setLed(position1, colors[i], whiteValues[i], brightnessValues[i]);
-					setLed(position2, colors[i], whiteValues[i], brightnessValues[i]);
-                    if (j % 4 == 0) focalCheck(3.0);
-                    else delay(3);
+            for (int j = 0; j < focal; j++) {
+                int offset = (i + j * 2) % LIGHT_COUNT;
+                int offset2 = (i + j2 * 2) % LIGHT_COUNT;
+                if (effectNumber != 7) return;
+
+                for (int k = 0; k < 2; k++) {
+                    setLed(offset, "#000000", 0, 0);
+                    if (j2 >= focal) {
+                        setLed(offset2, "#000000", 0, 0);
+                    }
+                    setLed(offset, colors[i], whiteValues[i], brightnessValues[i]);
+					if (j2 >= focal) {
+						setLed(offset2, colors[i], whiteValues[i], brightnessValues[i]);
+					}
                 }
             }
+            focalCheck(0);
         }
     }
 }
