@@ -148,7 +148,7 @@ void focalCheck(float delayTime) {
 void StateOfTrance() {
     int sc1 = 2; 
     int sc2 = 2;
-    int ls = 6;
+    int ls = 4;
     if (focal == -1) {
         for (int j = 0; j < LIGHT_COUNT; j++) {
             for (int k = 0; k < sc1; k++) {
