@@ -156,9 +156,9 @@ void StateOfTrance() {
                 for (int i = 0; i < ls; i++) {
                     int li = j + i;
                     setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
-                    delay(delayTime * 4);
+                    delay(delayTime * 2);
                     setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
-                    delay(delayTime * 4);
+                    focalCheck(delayTime * 2);
 
                 }
             }
@@ -169,9 +169,9 @@ void StateOfTrance() {
                 for (int i = 0; i < ls; i++) {
                     int li = j + i;
                     setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
-                    delay(delayTime * 4);
+                    delay(delayTime * 2);
                     setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
-                    delay(delayTime * 4);
+                    delay(delayTime * 2);
 
                 }
        
@@ -179,8 +179,9 @@ void StateOfTrance() {
         }
     }
     else {
-        int oth = 15
+        int oth = 15;
             for (int j = 0; j < 8; j++) {
+                focalCheck(0);
                 if (oth >= 0) {
                 for (int k = 0; k < sc1; k++) {
                     if (effectNumber != 11) return;
@@ -189,10 +190,10 @@ void StateOfTrance() {
                         int li2 = oth + i;
                         setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
                         setLed((li2 + 1) % LIGHT_COUNT, colors[li2 % COLOR_COUNT], whiteValues[li2 % COLOR_COUNT], brightnessValues[li2 % COLOR_COUNT]);
-                        delay(delayTime * 4);
+                        delay(delayTime * 2);
                         setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
                         setLed((li2 + 1) % LIGHT_COUNT, "#000000", 0, 0);
-                        delay(delayTime * 4);
+                        focalCheck(delayTime * 2);
 
                     }
                 }
@@ -205,10 +206,10 @@ void StateOfTrance() {
                         int li2 = oth + i;
                         setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
                         setLed((li2 + 1) % LIGHT_COUNT, colors[li2 % COLOR_COUNT], whiteValues[li2 % COLOR_COUNT], brightnessValues[li2 % COLOR_COUNT]);
-                        delay(delayTime * 4);
+                        delay(delayTime * 2);
                         setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
                         setLed((li2 + 1) % LIGHT_COUNT, "#000000", 0, 0);
-                        delay(delayTime * 4);
+                        delay(delayTime * 2);
                     }
                 }
             }
@@ -232,8 +233,8 @@ void Medusa() {
 
                     setLed(j, colors[(i + j) % COLOR_COUNT], whiteValues[(i + j) % COLOR_COUNT], brightnessValues[(i + j) % COLOR_COUNT]);
 
-                    if ((i % 4 == 0) && (j % 4 == 0)) focalCheck(delayTime * 2);
-                    else delay(delayTime * 2);
+                    if ((i % 4 == 0) && (j % 4 == 0)) focalCheck(delayTime);
+                    else delay(delayTime);
 
                     setLed(j, colors[(kc + j) % COLOR_COUNT], whiteValues[(kc + j) % COLOR_COUNT], brightnessValues[(kc + j) % COLOR_COUNT]);
                 }
@@ -242,27 +243,31 @@ void Medusa() {
     }
     else {
         for (int kc = 0; kc < LIGHT_COUNT; kc++) {
-            for (int i = 0; i < LIGHT_COUNT; i++) {
+            int g = 15;
+            for (int i = 0; i < LIGHT_COUNT / 2; i++) {
+                if (g >= 0) {
                 if (effectNumber != 10) return;
-
                 setLed(i, colors[kc], whiteValues[kc], brightnessValues[kc]);
+                setLed(g, colors[kc], whiteValues[kc], brightnessValues[kc]);
+                }
+                g--;
             }
-
-            for (int i = 1; i < COLOR_COUNT; i++) {
+            for (int i = 0; i < COLOR_COUNT; i++) {
+                int h = 15;
                 for (int j = 0; j < LIGHT_COUNT / 2; j++) {
+                    if (h >= 0) {
                     if (effectNumber != 10) return;
 
-                    int position1 = (focal + 1 + j) % LIGHT_COUNT;
-                    int position2 = (16 + focal - j) % LIGHT_COUNT;
-
-                    setLed(position1, colors[i], whiteValues[i], brightnessValues[i]);
-                    setLed(position2, colors[i], whiteValues[i], brightnessValues[i]);
+                    setLed(j, colors[(i + j) % COLOR_COUNT], whiteValues[(i + j) % COLOR_COUNT], brightnessValues[(i + j) % COLOR_COUNT]);
+                    setLed(h, colors[(i + j) % COLOR_COUNT], whiteValues[(i + j) % COLOR_COUNT], brightnessValues[(i + j) % COLOR_COUNT]);
 
                     if ((i % 4 == 0) && (j % 4 == 0)) focalCheck(delayTime);
                     else delay(delayTime);
 
-                    setLed(position1, colors[kc], whiteValues[kc], brightnessValues[kc]);
-                    setLed(position2, colors[kc], whiteValues[kc], brightnessValues[kc]);
+                    setLed(j, colors[(kc + j) % COLOR_COUNT], whiteValues[(kc + j) % COLOR_COUNT], brightnessValues[(kc + j) % COLOR_COUNT]);
+                    setLed(h, colors[(kc + j) % COLOR_COUNT], whiteValues[(kc + j) % COLOR_COUNT], brightnessValues[(kc + j) % COLOR_COUNT]);
+                    }
+                    h--;
                 }
             }
         }
