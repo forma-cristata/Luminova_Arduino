@@ -99,7 +99,7 @@ void focalCheck(float delayTime) {
     const byte HALL_PINS[] = { A0, A1, A2, A3, A4 }; 
     const int NUM_PINS = 5;
 
-    const int BASE_READINGS[] = { 497, 509, 505, 500, 515 };
+    const int BASE_READINGS[] = { 498, 511, 507, 502, 516 };
     const float THRESHOLDS[] = { 3.0, 2.9, 2.8, 2.5, 2.5 };             
 
 
@@ -585,21 +585,25 @@ void Cortez() {
 
 // 4 -> Mold
 void Decay() {
+    for (int i = 0; i < LIGHT_COUNT; i++) {
+        setLed(i, "#000000", 0, 0);
+    }
+
     int strobeCount1 = 2;
     int strobeCount2 = 2;
-    int ledsPerGroup = 12;
+    int ledsPerGroup = 4;
     if (focal == -1) {
+
         for (int startIdx = LIGHT_COUNT - 1; startIdx >= 0; startIdx--) {
+
             for (int strobe = 0; strobe < strobeCount1; strobe++) {
-                focalCheck(0.0);
 
                 for (int i = 0; i < ledsPerGroup; i++) {
                     if (effectNumber != 4) return;
 
                     int ledIndex = startIdx + i;
-                    for (int ha = 0; ha < 4; ha++) {
+                    for (int ha = 0; ha < 2; ha++) {
                         setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                        focalCheck(delayTime * 2);
                         setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
@@ -612,13 +616,13 @@ void Decay() {
 
 
             for (int strobe = 0; strobe < strobeCount2; strobe++) {
+
                 for (int i = 0; i < ledsPerGroup; i++) {
                     if (effectNumber != 4) return;
 
                     int ledIndex = startIdx + i;
-                    for (int ha = 0; ha < 4; ha++) {
+                    for (int ha = 0; ha < 2; ha++) {
                         setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + ha) % COLOR_COUNT], whiteValues[(ledIndex + ha) % COLOR_COUNT], brightnessValues[(ledIndex + ha) % COLOR_COUNT]);
-						focalCheck(delayTime / 2);
 						setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
@@ -628,15 +632,19 @@ void Decay() {
                 }
             }
         }
+        delay(delayTime / 4);
+
         for (int startIdx = 0; startIdx < LIGHT_COUNT; startIdx++) {
+
             for (int strobe = 0; strobe < strobeCount1; strobe++) {
+
                 for (int i = 0; i < ledsPerGroup; i++) {
+
                     int ledIndex = startIdx + i;
-                    for (int ha = 0; ha < 4; ha++) {
+                    for (int ha = 0; ha < 2; ha++) {
                         if (effectNumber != 4) return;
 
                         setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-						delay(delayTime * 2);
                         setLed((ledIndex) % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
@@ -648,13 +656,14 @@ void Decay() {
 
 
             for (int strobe = 0; strobe < strobeCount2; strobe++) {
+
                 for (int i = 0; i < ledsPerGroup; i++) {
+
                     int ledIndex = startIdx + i;
-                    for (int ha = 0; ha < 4; ha++) {
+                    for (int ha = 0; ha < 2; ha++) {
                         if (effectNumber != 4) return;
 
                         setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + ha) % COLOR_COUNT], whiteValues[(ledIndex + ha) % COLOR_COUNT], brightnessValues[(ledIndex + ha) % COLOR_COUNT]);
-                        delay(delayTime / 2);
                         setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
@@ -667,56 +676,136 @@ void Decay() {
         }
     }
     else {
+        int zz = 0;
         for (int startIdx = LIGHT_COUNT - 1; startIdx >= focal; startIdx--) {
-            for (int startIdx = focal; startIdx < LIGHT_COUNT; startIdx++) {
-                for (int strobe = 0; strobe < strobeCount1; strobe++) {
-                    focalCheck(0.0);
+            focalCheck(0.0);
 
-                    for (int i = 0; i < ledsPerGroup; i++) {
-                        int ledIndex = startIdx + i;
-                        int ledIndex2 = startIdx + i - 8;
-                        for (int ha = 0; ha < 4; ha++) {
-                            if (effectNumber != 4) return;
+            for (int strobe = 0; strobe < strobeCount1; strobe++) {
 
-							setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-							setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-							setLed(ledIndex, "#000000", 0, 0);
-							setLed(ledIndex2, "#000000", 0, 0);
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    if (effectNumber != 4) return;
+
+                    int ledIndex = startIdx + i;
+                    int ledIndex2 = zz + i;
+
+                    for (int ha = 0; ha < 2; ha++) {
+                        setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                        if (zz < focal) {
+                            setLed((ledIndex2 + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
                         }
-                    }
-                    for (int i = 0; i < ledsPerGroup; i++) {
-                        int ledIndex = startIdx + i;
-                        int ledIndex2 = startIdx - i;
-						setLed(ledIndex + 1, "#000000", 0, 0);
-						setLed(ledIndex2 + 1, "#000000", 0, 0);
+                        setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
+                        if (zz < focal) {
+                            setLed(ledIndex2 % LIGHT_COUNT, "#000000", 0, 0);
+                        }
                     }
                 }
 
-                focalCheck(delayTime);
-
-                for (int strobe = 0; strobe < strobeCount2; strobe++) {
-                    for (int i = 0; i < ledsPerGroup; i++) {
-                        int ledIndex = startIdx + i;
-                        int ledIndex2 = startIdx - i;
-                        for (int ha = 0; ha < 4; ha++) {
-                            if (effectNumber != 4) return;
-
-							setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-							setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-							setLed(ledIndex, "#000000", 0, 0);
-							setLed(ledIndex2, "#000000", 0, 0);
-                        }
-                    }
-                    for (int i = 0; i < ledsPerGroup; i++) {
-                        int ledIndex = startIdx + i;
-                        int ledIndex2 = startIdx - i;
-						setLed(ledIndex + 1, "#000000", 0, 0);
-						setLed(ledIndex2 + 1, "#000000", 0, 0);
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    int ledIndex = startIdx + i;
+                    int ledIndex2 = zz + i;
+                    setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                    if (zz < focal) {
+                        setLed((ledIndex2 + 1) % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
-
-                focalCheck(delayTime);
             }
+
+
+            for (int strobe = 0; strobe < strobeCount2; strobe++) {
+
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    if (effectNumber != 4) return;
+
+                    int ledIndex = startIdx + i;
+                    int ledIndex2 = zz + i;
+                    for (int ha = 0; ha < 2; ha++) {
+                        setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + ha) % COLOR_COUNT], whiteValues[(ledIndex + ha) % COLOR_COUNT], brightnessValues[(ledIndex + ha) % COLOR_COUNT]);
+                        if (zz < focal) {
+                            setLed((ledIndex2 + 1) % LIGHT_COUNT, colors[(ledIndex + ha) % COLOR_COUNT], whiteValues[(ledIndex + ha) % COLOR_COUNT], brightnessValues[(ledIndex + ha) % COLOR_COUNT]);
+                        }
+                        setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
+                        if (zz < focal) {
+                            setLed(ledIndex2 % LIGHT_COUNT, "#000000", 0, 0);
+                        }
+                    }
+                }
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    int ledIndex = startIdx + i;
+                    int ledIndex2 = zz + i;
+                    setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
+
+                    if (zz < focal) {
+                        setLed((ledIndex2 + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                    }
+                }
+            }
+            zz++;
+        }
+        delay(delayTime / 4);
+
+        zz = 15;
+        for (int startIdx = 0; startIdx < focal; startIdx++) {
+
+            for (int strobe = 0; strobe < strobeCount1; strobe++) {
+
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    int ledIndex = startIdx + i;
+                    int ledIndex2 = zz + i;
+
+                    for (int ha = 0; ha < 2; ha++) {
+                        if (effectNumber != 4) return;
+
+                        setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                        if (zz >= focal) {
+                            setLed((ledIndex2 + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                        }
+                        setLed((ledIndex) % LIGHT_COUNT, "#000000", 0, 0);
+                        if (zz >= focal) {
+                            setLed((ledIndex2) % LIGHT_COUNT, "#000000", 0, 0);
+                        }
+                    }
+                }
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    int ledIndex = startIdx + i;
+                    int ledIndex2 = zz + i;
+                    setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                    if (zz >= focal) {
+                        setLed((ledIndex2 + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                    }
+                }
+            }
+
+
+            for (int strobe = 0; strobe < strobeCount2; strobe++) {
+
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    int ledIndex = startIdx + i;
+                    int ledIndex2 = zz + i;
+
+                    for (int ha = 0; ha < 2; ha++) {
+                        if (effectNumber != 4) return;
+
+                        setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + ha) % COLOR_COUNT], whiteValues[(ledIndex + ha) % COLOR_COUNT], brightnessValues[(ledIndex + ha) % COLOR_COUNT]);
+                        if (zz >= focal) {
+                            setLed((ledIndex2 + 1) % LIGHT_COUNT, colors[(ledIndex + ha) % COLOR_COUNT], whiteValues[(ledIndex + ha) % COLOR_COUNT], brightnessValues[(ledIndex + ha) % COLOR_COUNT]);
+                        }
+
+                        setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
+                        if (zz >= focal) {
+                            setLed(ledIndex2 % LIGHT_COUNT, "#000000", 0, 0);
+                        }
+                    }
+                }
+                for (int i = 0; i < ledsPerGroup; i++) {
+                    int ledIndex = startIdx + i;
+                    int ledIndex2 = zz + i;
+                    setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                    if (zz >= focal) {
+                        setLed((ledIndex2 + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                    }
+                }
+            }
+            zz--;
         }
     }
 }
