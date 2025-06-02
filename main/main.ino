@@ -56,6 +56,7 @@ void processJsonConfig(const String& jsonString);
 void currentSettingPrint();
 void ledSetup();
 void setLed(int L, String hex, int W, int Brightness);
+void setLed(int L, String hex, int W, int Brightness);
 void selectEffect(int effectNumber);
 void StuckInABlender();
 void Smolder();
@@ -144,7 +145,6 @@ void focalCheck(float delayTime) {
 }
 
 // 11 -> Trance
-// TODO: Does not rotate around the colors
 void StateOfTrance() {
     int sc1 = 2; 
     int sc2 = 2;
@@ -179,50 +179,40 @@ void StateOfTrance() {
         }
     }
     else {
-        for (int j = 0; j < LIGHT_COUNT; j++) {
-            int distance = abs(focal - j);  
+        int oth = 15
+            for (int j = 0; j < 8; j++) {
+                if (oth >= 0) {
+                for (int k = 0; k < sc1; k++) {
+                    if (effectNumber != 11) return;
+                    for (int i = 0; i < ls; i++) {
+                        int li = j + i;
+                        int li2 = oth + i;
+                        setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
+                        setLed((li2 + 1) % LIGHT_COUNT, colors[li2 % COLOR_COUNT], whiteValues[li2 % COLOR_COUNT], brightnessValues[li2 % COLOR_COUNT]);
+                        delay(delayTime * 4);
+                        setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                        setLed((li2 + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                        delay(delayTime * 4);
 
-            for (int k = 0; k < sc1; k++) {
-                if (effectNumber != 11) return;
-
-                for (int i = 0; i < ls; i++) {
-                    int li = distance + i;  
-                    if (li < LIGHT_COUNT) {     
-						setLed(li + 1, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
                     }
                 }
 
-                if ((j % 4 == 0) && (k % 4 == 0)) focalCheck(delayTime);
-                else delay(delayTime);
+                for (int strobe = 0; strobe < sc2; strobe++) {
+                    if (effectNumber != 11) return;
 
-                for (int i = 0; i < ls; i++) {
-                    int ledIndex = distance + i;
-                    if (ledIndex < LIGHT_COUNT) {
-						setLed(ledIndex + 1, "#000000", 0, 0);
+                    for (int i = 0; i < ls; i++) {
+                        int li = j + i;
+                        int li2 = oth + i;
+                        setLed((li + 1) % LIGHT_COUNT, colors[li % COLOR_COUNT], whiteValues[li % COLOR_COUNT], brightnessValues[li % COLOR_COUNT]);
+                        setLed((li2 + 1) % LIGHT_COUNT, colors[li2 % COLOR_COUNT], whiteValues[li2 % COLOR_COUNT], brightnessValues[li2 % COLOR_COUNT]);
+                        delay(delayTime * 4);
+                        setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                        setLed((li2 + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                        delay(delayTime * 4);
                     }
                 }
-                delay(delayTime);
             }
-
-            for (int strobe = 0; strobe < sc2; strobe++) {
-                if (effectNumber != 11) return;
-
-                for (int i = 0; i < ls; i++) {
-                    int ledIndex = distance + i;
-                    if (ledIndex < LIGHT_COUNT) { 
-						setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                    }
-                }
-                delay(delayTime);
-
-                for (int i = 0; i < ls; i++) {
-                    int ledIndex = distance + i;
-                    if (ledIndex < LIGHT_COUNT) { 
-						setLed(ledIndex + 1, "#000000", 0, 0);
-                    }
-                }
-                delay(delayTime);
-            }
+            oth--;
         }
     }
 }
@@ -499,16 +489,17 @@ void TheUnderground() {
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
                 int offset = (i + j * 2) % LIGHT_COUNT;
                 if (effectNumber != 7) return;
-                
+
                 for (int k = 0; k < 4; k++) {
-					setLed(offset, "#000000", 0, 0);
+                    setLed(offset, "#000000", 0, 0);
                     delay(delayTime);
-					setLed(offset, colors[i], whiteValues[i], brightnessValues[i]);
+                    setLed(offset, colors[i], whiteValues[i], brightnessValues[i]);
                 }
                 delay(delayTime * 2);
             }
             focalCheck(delayTime * 2);
         }
+    }
     else {
         for (int i = 0; i < COLOR_COUNT; i++) {
             for (int j = 0; j < LIGHT_COUNT / 2; j++) {
@@ -534,7 +525,7 @@ void TheUnderground() {
 void Still() {
     for (int i = 0; i < LIGHT_COUNT; i++) {
 		setLed(i, colors[i], whiteValues[i], brightnessValues[i]);
-        if (i % 4 == 0) focalCheck(delayTime);
+        if (i % 8 == 0) focalCheck(delayTime);
     }
     delay(2000);
 }
@@ -744,7 +735,7 @@ void FeelTheFunk() {
                     if (effectNumber != 3) return;
 
                     int ledIndex = random(0, LIGHT_COUNT);
-                    setLedChill((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + colorer) % COLOR_COUNT], whiteValues[(ledIndex + colorer) % COLOR_COUNT], brightnessValues[(ledIndex + colorer) % COLOR_COUNT]);
+                    setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + colorer) % COLOR_COUNT], whiteValues[(ledIndex + colorer) % COLOR_COUNT], brightnessValues[(ledIndex + colorer) % COLOR_COUNT]);
                     delay(delayTime);
                 }
 
@@ -754,7 +745,7 @@ void FeelTheFunk() {
                 for (int i = 0; i < ledsPerGroup; i++) {
                     if (effectNumber != 3) return;
                     int ledIndex = random(0, LIGHT_COUNT);
-                    setLedChill((ledIndex + 1)%LIGHT_COUNT, "#000000", 0, 0);
+                    setLed((ledIndex + 1)%LIGHT_COUNT, "#000000", 0, 0);
                     delay(delayTime);
 
                 }
@@ -767,7 +758,7 @@ void FeelTheFunk() {
                 for (int i = 0; i < ledsPerGroup; i++) {
                     if (effectNumber != 3) return;
                     int ledIndex = random(0, LIGHT_COUNT);
-                    setLedChill((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + colorer) % COLOR_COUNT], whiteValues[(ledIndex + colorer) % COLOR_COUNT], brightnessValues[(ledIndex + colorer) % COLOR_COUNT]);
+                    setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + colorer) % COLOR_COUNT], whiteValues[(ledIndex + colorer) % COLOR_COUNT], brightnessValues[(ledIndex + colorer) % COLOR_COUNT]);
                     delay(delayTime);
 
                 }
@@ -778,7 +769,7 @@ void FeelTheFunk() {
                 for (int i = 0; i < ledsPerGroup; i++) {
                     if (effectNumber != 3) return;
                     int ledIndex = random(0, LIGHT_COUNT);
-                    setLedChill((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
+                    setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
                     delay(delayTime);
 
                 }
@@ -796,8 +787,8 @@ void FeelTheFunk() {
 
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-				setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                setLedChill(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
 
@@ -806,8 +797,8 @@ void FeelTheFunk() {
 
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-                setLedChill(ledIndex + 1, "#000000", 0, 0);
-                setLedChill(ledIndex2 + 1, "#000000", 0, 0);
+                setLed(ledIndex + 1, "#000000", 0, 0);
+                setLed(ledIndex2 + 1, "#000000", 0, 0);
             }
         }
 
@@ -821,8 +812,8 @@ void FeelTheFunk() {
 
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-                setLedChill(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                setLedChill(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
             }
 
 
@@ -831,8 +822,8 @@ void FeelTheFunk() {
 
                 int ledIndex = random(0, LIGHT_COUNT);
                 int ledIndex2 = random(0, LIGHT_COUNT);
-                setLedChill(ledIndex + 1, "#000000", 0, 0);
-                setLedChill(ledIndex2 + 1, "#000000", 0, 0);
+                setLed(ledIndex + 1, "#000000", 0, 0);
+                setLed(ledIndex2 + 1, "#000000", 0, 0);
             }
         }
     }
@@ -862,17 +853,17 @@ void ThePianoMan() {
                 if (index2 < 0) index2 += LIGHT_COUNT;
                 if (index3 < 0) index3 += LIGHT_COUNT;
 
-                setLedChill(index1, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
+                setLed(index1, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
                 delay(delayTime * 4);
-                setLedChill(index1, "#000000", 0, 0);
+                setLed(index1, "#000000", 0, 0);
 
-                setLedChill(index2, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
+                setLed(index2, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
                 delay(delayTime * 4);
-                setLedChill(index2, "#000000", 0, 0);
+                setLed(index2, "#000000", 0, 0);
 
-                setLedChill(index3, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
+                setLed(index3, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
                 focalCheck(delayTime * 4);
-                setLedChill(index3, "#000000", 0, 0);
+                setLed(index3, "#000000", 0, 0);
 
             }
         }
@@ -883,25 +874,22 @@ void ThePianoMan() {
             for (int i = 0; i < delayTime / 2; i++) {
                 if (effectNumber != 2) return;
 
-                // Create a wave pattern from the focal point
-                // These offset calculations ensure proper wrapping
-                int offset = x % 8; // Use a smaller range for more visible movement
+                int offset = x % 8; 
 
-                // Calculate positions relative to focal point with wrapping
                 int led1 = (focal + offset) % LIGHT_COUNT;
                 int led2 = (focal - offset + LIGHT_COUNT) % LIGHT_COUNT;
                 int led3 = (focal + offset + LIGHT_COUNT / 2) % LIGHT_COUNT;
                 int led4 = (focal - offset + LIGHT_COUNT / 2 + LIGHT_COUNT) % LIGHT_COUNT;
 
-                setLedChill(led1, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
-                setLedChill(led2, colors[(x + 2) % LIGHT_COUNT], whiteValues[(x + 2) % LIGHT_COUNT], brightnessValues[(x + 2) % LIGHT_COUNT]);
-                setLedChill(led3, colors[(x + 4) % LIGHT_COUNT], whiteValues[(x + 4) % LIGHT_COUNT], brightnessValues[(x + 4) % LIGHT_COUNT]);
-                setLedChill(led4, colors[(x + 6) % LIGHT_COUNT], whiteValues[(x + 6) % LIGHT_COUNT], brightnessValues[(x + 6) % LIGHT_COUNT]);
+                setLed(led1, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
+                setLed(led2, colors[(x + 2) % LIGHT_COUNT], whiteValues[(x + 2) % LIGHT_COUNT], brightnessValues[(x + 2) % LIGHT_COUNT]);
+                setLed(led3, colors[(x + 4) % LIGHT_COUNT], whiteValues[(x + 4) % LIGHT_COUNT], brightnessValues[(x + 4) % LIGHT_COUNT]);
+                setLed(led4, colors[(x + 6) % LIGHT_COUNT], whiteValues[(x + 6) % LIGHT_COUNT], brightnessValues[(x + 6) % LIGHT_COUNT]);
 
-                setLedChill(led1, "#000000", 0, 0);
-                setLedChill(led2, "#000000", 0, 0);
-                setLedChill(led3, "#000000", 0, 0);
-                setLedChill(led4, "#000000", 0, 0);
+                setLed(led1, "#000000", 0, 0);
+                setLed(led2, "#000000", 0, 0);
+                setLed(led3, "#000000", 0, 0);
+                setLed(led4, "#000000", 0, 0);
 
                 focalCheck(2);
             }
@@ -1101,7 +1089,7 @@ void selectEffect(int effectNumber) {
         StateOfTrance(); // TRANCE originally
 		break;
     default: 
-		Serial.println("Invalid effect number");
+		////Serial.println("Invalid effect number");
 		break;
     }
 }
@@ -1688,30 +1676,30 @@ void ledSetup() {
 
 void currentSettingPrint() {
 	if (!shelfOn) {
-		Serial.println("Shelf is OFF");
+		////Serial.println("Shelf is OFF");
 	}
     else {
-		Serial.println("Focal Point: " + String(focal));
-        Serial.println("EffectNumber: " + String(effectNumber));
-        Serial.println("delayTime: " + String(delayTime));
-        Serial.println("WhiteValues: ");
+		////Serial.println("Focal Point: " + String(focal));
+        ////Serial.println("EffectNumber: " + String(effectNumber));
+        ////Serial.println("delayTime: " + String(delayTime));
+        ////Serial.println("WhiteValues: ");
         for (int i = 0; i < LIGHT_COUNT; i++) {
-            Serial.print(whiteValues[i]);
-            Serial.print(" ");
+            ////Serial.print(whiteValues[i]);
+            ////Serial.print(" ");
         }
-        Serial.println();
-        Serial.println("BrightnessValues: ");
+        ////Serial.println();
+        ////Serial.println("BrightnessValues: ");
         for (int i = 0; i < LIGHT_COUNT; i++) {
-            Serial.print(brightnessValues[i]);
-            Serial.print(" ");
+            ////Serial.print(brightnessValues[i]);
+            ////Serial.print(" ");
         }
-        Serial.println();
-        Serial.println("Colors: ");
+        ////Serial.println();
+        ////Serial.println("Colors: ");
         for (int i = 0; i < LIGHT_COUNT; i++) {
-            Serial.print(colors[i]);
-            Serial.print(" ");
+            ////Serial.print(colors[i]);
+            ////Serial.print(" ");
         }
-        Serial.println();
+        ////Serial.println();
     }
 }
 
@@ -1719,7 +1707,7 @@ void handleWebServer() {
     WiFiClient client = server.available();
 
     if (client) {
-        Serial.println("New client connected");
+        ////Serial.println("New client connected");
         String currentLine = "";
         String requestHeader = "";
         String requestBody = "";
@@ -1759,15 +1747,15 @@ void handleWebServer() {
             String lengthStr = requestHeader.substring(start, end);
             lengthStr.trim();
             contentLength = lengthStr.toInt();
-            Serial.print("Content-Length found: ");
-            Serial.println(contentLength);
+            ////Serial.print("Content-Length found: ");
+            ////Serial.println(contentLength);
         }
 
         // read the body
         if (isBody && contentLength > 0) {
-            Serial.print("Reading body, expecting: ");
-            Serial.print(contentLength);
-            Serial.println(" bytes");
+            //Serial.print("Reading body, expecting: ");
+            //Serial.print(contentLength);
+            ////Serial.println(" bytes");
 
             timeout = millis();
             requestBody = "";
@@ -1781,16 +1769,16 @@ void handleWebServer() {
                     bodyBytesRead++;
 
                     if (bodyBytesRead % 100 == 0 || bodyBytesRead == contentLength) {
-                        Serial.print("Body bytes read: ");
-                        Serial.print(bodyBytesRead);
-                        Serial.print("/");
-                        Serial.println(contentLength);
+                        //Serial.print("Body bytes read: ");
+                        //Serial.print(bodyBytesRead);
+                        //Serial.print("/");
+                        ////Serial.println(contentLength);
                     }
                 }
             }
 
-            Serial.println("Body received:");
-            Serial.println(requestBody);
+            ////Serial.println("Body received:");
+            ////Serial.println(requestBody);
         }
 
         // Check if we got a complete body
@@ -1804,18 +1792,18 @@ void handleWebServer() {
             client.println();
 
             if (bodyComplete && requestBody.length() > 0) {
-                Serial.println("Processing JSON config...");
+                ////Serial.println("Processing JSON config...");
                 processJsonConfig(requestBody);
 				shelfOn = true;
                 client.println("{\"status\":\"Configuration updated successfully\"}");
             }
             else {
-                Serial.println("Incomplete body received!");
-                Serial.print("Expected: ");
-                Serial.print(contentLength);
-                Serial.print(" bytes, Got: ");
-                Serial.print(bodyBytesRead);
-                Serial.println(" bytes");
+                ////Serial.println("Incomplete body received!");
+                //Serial.print("Expected: ");
+                //Serial.print(contentLength);
+                //Serial.print(" bytes, Got: ");
+                //Serial.print(bodyBytesRead);
+                ////Serial.println(" bytes");
                 client.println("{\"error\":\"Incomplete data received\"}");
             }
             client.stop();
@@ -1848,14 +1836,14 @@ void handleWebServer() {
 
             if (requestHeader.indexOf("GET /api/led/on") != -1) {
                 client.println("{\"status\":\"LED ON\"}");
-                Serial.println("LED ON command received");
+                ////Serial.println("LED ON command received");
 				shelfOn = true;
                 client.stop();
                 return;
             }
             else if (requestHeader.indexOf("GET /api/led/off") != -1) {
                 client.println("{\"status\":\"LED OFF\"}");
-                Serial.println("LED OFF command received");
+                ////Serial.println("LED OFF command received");
 				shelfOn = false;
                 client.stop();
                 return;
@@ -1899,7 +1887,7 @@ void handleWebServer() {
 
         // Close the connection
         client.stop();
-        Serial.println("Client disconnected");
+        ////Serial.println("Client disconnected");
     }
 }
 
@@ -1908,8 +1896,8 @@ void processJsonConfig(const String& jsonString) {
     DeserializationError error = deserializeJson(doc, jsonString);
 
     if (error) {
-        Serial.print("JSON parsing failed: ");
-        Serial.println(error.c_str());
+        //Serial.print("JSON parsing failed: ");
+        ////Serial.println(error.c_str());
         return;
     }
 
@@ -1965,14 +1953,14 @@ void processJsonConfig(const String& jsonString) {
 
 void connectToWifi() {
 	while (status != WL_CONNECTED) {
-		Serial.print("Attempting to connect to SSID: ");
-		Serial.println(ssid);
+		//Serial.print("Attempting to connect to SSID: ");
+		////Serial.println(ssid);
 		status = WiFi.begin(ssid, pass);
 		focalCheck(2000.0);
 	}
 
-	Serial.print("IP Address: ");
-	Serial.println(WiFi.localIP());
+	//Serial.print("IP Address: ");
+	////Serial.println(WiFi.localIP());
 
 	server.begin();
 }
