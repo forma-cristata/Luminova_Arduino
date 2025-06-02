@@ -496,6 +496,7 @@ void TheUnderground() {
 						setLed(offset2, colors[i], whiteValues[i], brightnessValues[i]);
 					}
                 }
+                j2--;
             }
             focalCheck(0);
         }
@@ -524,7 +525,7 @@ void Cortez() {
                 setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
                 setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 
-                delay(delayTime * 2);
+                delay(delayTime);
 
                 ledIndex = (j + i + 1) % LIGHT_COUNT;
                 ledIndex2 = (j + i + 2) % LIGHT_COUNT;
@@ -532,32 +533,51 @@ void Cortez() {
                 setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
                 setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 
-                if ((j % 4 == 0) && (i % 4 == 0)) focalCheck(delayTime * 2);
-                else delay(delayTime * 2);
+                if ((j % 4 == 0) && (i % 4 == 0)) focalCheck(delayTime);
+                else delay(delayTime);
             }
         }
     }
     else {
         for (int j = 0; j < COLOR_COUNT; j++) {
-            for (int i = 0; i < LIGHT_COUNT / 2; i++) {
+            int z = 15;
+            for (int i = 0; i < focal; i++) {
                 if (effectNumber != 5) return;
 
-                int ledIndex = (focal + i) % LIGHT_COUNT;
-                int ledIndex2 = (focal - i + LIGHT_COUNT) % LIGHT_COUNT;
+                int ledIndex = (j + i) % LIGHT_COUNT;
+                int ledIndexz = (z + i) % LIGHT_COUNT;
+                int ledIndex2 = (j + i + 1) % LIGHT_COUNT;
+                int ledIndex2z = (z + i + 1) % LIGHT_COUNT;
 
                 setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
-                setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                if (z >= focal) {
+                   setLed(ledIndexz, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                }
+                setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);                
+                if (z >= focal) {
+                    setLed(ledIndex2z, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                }
 
-                delay(delayTime * 2);
+                delay(delayTime);
 
-                ledIndex = (focal + i + 1) % LIGHT_COUNT;
-                ledIndex2 = (focal - i - 1 + LIGHT_COUNT) % LIGHT_COUNT;
+                ledIndex = (j + i + 1) % LIGHT_COUNT;
+                ledIndexz = (z + i + 1) % LIGHT_COUNT;
+                ledIndex2 = (j + i + 2) % LIGHT_COUNT;
+                ledIndex2z = (z + i + 2) % LIGHT_COUNT;
 
                 setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                if (z >= focal) {
+                    setLed(ledIndexz, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                }
                 setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 
-                if ((j % 4 == 0) && (i % 4 == 0)) focalCheck(delayTime * 2);
-                else delay(delayTime * 2);
+                if (z >= focal) {
+                    setLed(ledIndex2z, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                }
+
+                if ((j % 4 == 0) && (i % 4 == 0)) focalCheck(delayTime);
+                else delay(delayTime);
+                z--;
             }
         }
     }
