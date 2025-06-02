@@ -543,24 +543,24 @@ void Still() {
 
 // 5 -> Progressive
 void Cortez() {
-    if (focal != -1) {
+    if (focal == -1) {
         for (int j = 0; j < COLOR_COUNT; j++) {
-            for (int i = 0; i < LIGHT_COUNT / 2; i++) {
+            for (int i = 0; i < LIGHT_COUNT; i++) {
                 if (effectNumber != 5) return;
 
-                int ledIndex = (focal + i) % LIGHT_COUNT;
-                int ledIndex2 = (focal - i + LIGHT_COUNT) % LIGHT_COUNT;
+                int ledIndex = (j + i) % LIGHT_COUNT;
+                int ledIndex2 = (j + i + 1) % LIGHT_COUNT;
 
-				setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
-				setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
-            
+                setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+
                 delay(delayTime * 2);
 
-                ledIndex = (focal + i + 1) % LIGHT_COUNT;
-                ledIndex2 = (focal - i - 1 + LIGHT_COUNT) % LIGHT_COUNT;
+                ledIndex = (j + i + 1) % LIGHT_COUNT;
+                ledIndex2 = (j + i + 2) % LIGHT_COUNT;
 
-				setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
-				setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 
                 if ((j % 4 == 0) && (i % 4 == 0)) focalCheck(delayTime * 2);
                 else delay(delayTime * 2);
@@ -569,25 +569,25 @@ void Cortez() {
     }
     else {
         for (int j = 0; j < COLOR_COUNT; j++) {
-            for (int i = 0; i < LIGHT_COUNT; i++) {
+            for (int i = 0; i < LIGHT_COUNT / 2; i++) {
                 if (effectNumber != 5) return;
 
-                int ledIndex = (j + i) % LIGHT_COUNT;
-                int ledIndex2 = (j + i + 1) % LIGHT_COUNT;
+                int ledIndex = (focal + i) % LIGHT_COUNT;
+                int ledIndex2 = (focal - i + LIGHT_COUNT) % LIGHT_COUNT;
 
-				setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
-				setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 
-                delay(delayTime);
+                delay(delayTime * 2);
 
-                ledIndex = (j + i + 1) % LIGHT_COUNT;
-                ledIndex2 = (j + i + 2) % LIGHT_COUNT;
+                ledIndex = (focal + i + 1) % LIGHT_COUNT;
+                ledIndex2 = (focal - i - 1 + LIGHT_COUNT) % LIGHT_COUNT;
 
-				setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
-				setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                setLed(ledIndex, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
+                setLed(ledIndex2, colors[j % COLOR_COUNT], whiteValues[j % COLOR_COUNT], brightnessValues[j % COLOR_COUNT]);
 
-                if ((j % 4 == 0) && (i % 4 == 0)) focalCheck(delayTime);
-                else delay(delayTime);
+                if ((j % 4 == 0) && (i % 4 == 0)) focalCheck(delayTime * 2);
+                else delay(delayTime * 2);
             }
         }
     }
@@ -609,7 +609,7 @@ void Decay() {
                     int ledIndex = startIdx + i;
                     for (int ha = 0; ha < 4; ha++) {
                         setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                        delay(delayTime * 2);
+                        focalCheck(delayTime * 2);
                         setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
