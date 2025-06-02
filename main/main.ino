@@ -597,7 +597,7 @@ void Cortez() {
 void Decay() {
     int strobeCount1 = 2;
     int strobeCount2 = 2;
-    int ledsPerGroup = LIGHT_COUNT * 3 / 4;
+    int ledsPerGroup = 12;
     if (focal == -1) {
         for (int startIdx = LIGHT_COUNT - 1; startIdx >= 0; startIdx--) {
             for (int strobe = 0; strobe < strobeCount1; strobe++) {
@@ -609,7 +609,7 @@ void Decay() {
                     int ledIndex = startIdx + i;
                     for (int ha = 0; ha < 4; ha++) {
                         setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                        delay(delayTime / 12);
+                        delay(delayTime * 2);
                         setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
@@ -627,14 +627,14 @@ void Decay() {
 
                     int ledIndex = startIdx + i;
                     for (int ha = 0; ha < 4; ha++) {
-                        setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-						focalCheck(delayTime / 12);
+                        setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + ha) % COLOR_COUNT], whiteValues[(ledIndex + ha) % COLOR_COUNT], brightnessValues[(ledIndex + ha) % COLOR_COUNT]);
+						focalCheck(delayTime / 2);
 						setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
                 for (int i = 0; i < ledsPerGroup; i++) {
                     int ledIndex = startIdx + i;
-					setLed(ledIndex + 1, "#000000", 0, 0);
+                    setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
                 }
             }
         }
@@ -646,13 +646,13 @@ void Decay() {
                         if (effectNumber != 4) return;
 
                         setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-						delay(delayTime / 12);
+						delay(delayTime * 2);
                         setLed((ledIndex) % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
                 for (int i = 0; i < ledsPerGroup; i++) {
                     int ledIndex = startIdx + i;
-					setLed(ledIndex + 1, "#000000", 0, 0);
+                    setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
                 }
             }
 
@@ -663,14 +663,14 @@ void Decay() {
                     for (int ha = 0; ha < 4; ha++) {
                         if (effectNumber != 4) return;
 
-                        setLed((ledIndex + 1) % LIGHT_COUNT, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                        delay(delayTime / 12);
+                        setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + ha) % COLOR_COUNT], whiteValues[(ledIndex + ha) % COLOR_COUNT], brightnessValues[(ledIndex + ha) % COLOR_COUNT]);
+                        delay(delayTime / 2);
                         setLed(ledIndex % LIGHT_COUNT, "#000000", 0, 0);
                     }
                 }
                 for (int i = 0; i < ledsPerGroup; i++) {
                     int ledIndex = startIdx + i;
-					setLed(ledIndex + 1, "#000000", 0, 0);
+                    setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
                 }
             }
 
