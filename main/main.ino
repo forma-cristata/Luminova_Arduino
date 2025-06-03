@@ -1111,8 +1111,9 @@ void Smolder() {
 
 // 0 -> Blender
 void StuckInABlender() {
-    unsigned long currentTime = millis();
-	int colorOffset = (currentTime / 100) % COLOR_COUNT;
+    unsigned long currentTime = millis(); // Randomization - Time since arduino began functioning.
+	int colorOffset = (currentTime / 100) % COLOR_COUNT; // Turn into usable random Color Index.
+    delayTime = delayTime / 4;
 
     if (focal == -1) {
         focalCheck(0);
@@ -1126,19 +1127,21 @@ void StuckInABlender() {
 		}
     }
     else {
-		for (int i = 0; i < LIGHT_COUNT/2; i++) {
+        focalCheck(0);
+        int ichlibedich = 15;
+        for (int i = 0; i < focal; i++) {
             if (effectNumber != 0) return;
-			int led1 = focal - i;
-			int led2 = focal + i;
 
-			if (led1 < 0) led1 = LIGHT_COUNT + led1;
-			if (led2 >= LIGHT_COUNT) led2 = led2 - LIGHT_COUNT;
+            int colorIndex = (i + colorOffset) % COLOR_COUNT;
+            setLed(i, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
 
-			int colorIndex = (i + colorOffset) % COLOR_COUNT;
-			setLed(led1, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
-			setLed(led2, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
-			focalCheck(delayTime / 8);
-		}
+            if (ichlibedich >= focal) {
+                setLed(ichlibedich, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
+            }
+            delay(delayTime);
+
+            ichlibedich--;
+        }
     }
 
 }
