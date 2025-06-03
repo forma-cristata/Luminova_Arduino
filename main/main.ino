@@ -102,7 +102,6 @@ void focalCheck(float delayTime) {
     const int BASE_READINGS[] = { 500, 509, 506, 500, 514 };
     const float THRESHOLDS[] = { 3.0, 2.9, 2.8, 2.5, 2.5 };             
 
-
     float highestVal = 0;
     int highestPin = -1;
 
@@ -139,7 +138,6 @@ void focalCheck(float delayTime) {
         }
     }
 	focal = focalPoint;
-
     Serial.print("Focal point: ");
     Serial.println(focal);
 }
@@ -159,7 +157,6 @@ void StateOfTrance() {
                     delay(delayTime * 2);
                     setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
                     focalCheck(delayTime * 2);
-
                 }
             }
 
@@ -172,9 +169,7 @@ void StateOfTrance() {
                     delay(delayTime * 2);
                     setLed((li + 1) % LIGHT_COUNT, "#000000", 0, 0);
                     delay(delayTime * 2);
-
                 }
-       
             }
         }
     }
@@ -197,7 +192,6 @@ void StateOfTrance() {
                             setLed((li2 + 1) % LIGHT_COUNT, "#000000", 0, 0);
                         }
                         focalCheck(delayTime * 2);
-
                     }
                 }
 
@@ -307,6 +301,7 @@ void LapisLazuli() {
             }
         }
     }
+
     else {
         for (int i = 0; i < LIGHT_COUNT; i++) {
             focalCheck(0);
@@ -380,6 +375,7 @@ void BerghainBitte() {
         }
         focalCheck(delayTime);
     }
+
     else {
         for (int i = 0; i < COLOR_COUNT; i++) {
             int m = (i + 1) % COLOR_COUNT;
@@ -392,10 +388,13 @@ void BerghainBitte() {
             for (int j = 15; j >= focal; j--) {
                 int k = (j + 1) % LIGHT_COUNT;
                 int k2 = (zz + 1) % LIGHT_COUNT;
+
                 int l = (j + 2) % LIGHT_COUNT;
                 int l2 = (zz + 2) % LIGHT_COUNT;
+
                 int y = (j + 3) % LIGHT_COUNT;
                 int y2 = (zz + 3) % LIGHT_COUNT;
+
                 int z = (j + 4) % LIGHT_COUNT;
                 int z2 = (zz + 4) % LIGHT_COUNT;
 
@@ -451,10 +450,8 @@ void BerghainBitte() {
                 }
                 zz++;
             }
-
         }
         focalCheck(delayTime);
-
     }
 }
 
@@ -476,6 +473,7 @@ void TheUnderground() {
             focalCheck(0);
         }
     }
+
     else {
         for (int i = 0; i < COLOR_COUNT; i++) {
             int j2 = 15;
@@ -614,7 +612,6 @@ void Decay() {
                 }
             }
 
-
             for (int strobe = 0; strobe < strobeCount2; strobe++) {
 
                 for (int i = 0; i < ledsPerGroup; i++) {
@@ -640,7 +637,6 @@ void Decay() {
                 if (effectNumber != 4) return;
 
                 for (int i = 0; i < ledsPerGroup; i++) {
-
                     int ledIndex = (startIdx + i + 1) % LIGHT_COUNT;
                     int colorIndex = ledIndex % COLOR_COUNT;
 
@@ -654,7 +650,6 @@ void Decay() {
                     setLed(ledIndex, "#000000", 0, 0);
                 }
             }
-
 
             for (int strobe = 0; strobe < strobeCount2; strobe++) {
                 if (effectNumber != 4) return;
@@ -677,10 +672,8 @@ void Decay() {
     else {
         int startIdx2 = 0;
         for (int startIdx = LIGHT_COUNT - 1; startIdx >= focal; startIdx--) {
-
             for (int strobe = 0; strobe < strobeCount1; strobe++) {
                 if (effectNumber != 4) return;
-                
                 for (int i = 0; i < ledsPerGroup; i++) {
                     int ledIndex = (startIdx + i + 1) % LIGHT_COUNT;
                     int ledIndex2 = (startIdx2 + i + 1) % LIGHT_COUNT;
@@ -834,16 +827,13 @@ void FeelTheFunk() {
 
             focalCheck(delayTime * 12);
 
-
             for (int i = 0; i < ledsPerGroup; i++) {
                 if (effectNumber != 3) return;
                 int ledIndex = (random(0, LIGHT_COUNT) + 1) % LIGHT_COUNT;
                 setLed(ledIndex, "#000000", 0, 0);
                 delay(delayTime);
-
             }
         }
-
 
         for (int strobe = 0; strobe < strobeCount2; strobe++) {
             focalCheck(delayTime * 12);
@@ -854,18 +844,15 @@ void FeelTheFunk() {
 				int colorIndex = (ledIndex + colorer) % COLOR_COUNT;
                 setLed(ledIndex, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
                 delay(delayTime);
-
             }
 
             focalCheck(delayTime * 12);
-
 
             for (int i = 0; i < ledsPerGroup; i++) {
                 if (effectNumber != 3) return;
                 int ledIndex = (random(0, LIGHT_COUNT) + 1) % LIGHT_COUNT;
                 setLed(ledIndex, "#000000", 0, 0);
                 delay(delayTime);
-
             }
         }
     }
@@ -891,13 +878,10 @@ void ThePianoMan() {
 
             for (int i = 0; i < 2; i++) {
                 if (effectNumber != 2) return;
-
-                // Apply modulo to ensure LED indices wrap around properly
                 int index1 = patternIndices[x % LIGHT_COUNT] % LIGHT_COUNT;
                 int index2 = pattern2Indices[x % LIGHT_COUNT] % LIGHT_COUNT;
                 int index3 = pattern3Indices[x % LIGHT_COUNT] % LIGHT_COUNT;
 
-                // Handle negative indices by adding LIGHT_COUNT
                 if (index1 < 0) index1 += LIGHT_COUNT;
                 if (index2 < 0) index2 += LIGHT_COUNT;
                 if (index3 < 0) index3 += LIGHT_COUNT;
@@ -914,7 +898,6 @@ void ThePianoMan() {
                 setLed(index3, colors[x], whiteValues[x], brightnessValues[x]);
                 focalCheck(delayTime);
                 setLed(index3, "#000000", 0, 0);
-
             }
         }
     }
@@ -1126,6 +1109,7 @@ void StuckInABlender() {
 			setLed(i, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
 		}
     }
+
     else {
         focalCheck(0);
         int ichlibedich = 15;
@@ -1143,7 +1127,6 @@ void StuckInABlender() {
             ichlibedich--;
         }
     }
-
 }
 
 void selectEffect(int effectNumber) {
@@ -1185,24 +1168,21 @@ void selectEffect(int effectNumber) {
         StateOfTrance(); // TRANCE originally
 		break;
     default: 
-		////Serial.println("Invalid effect number");
+        Still();
 		break;
     }
 }
 
 void setLedChill(int L, String hex, int newW, int Brightness) {
-    // hex to rgb
 	int R = (int)strtol(hex.substring(1, 3).c_str(), nullptr, 16);
 	int G = (int)strtol(hex.substring(3, 5).c_str(), nullptr, 16);
 	int B = (int)strtol(hex.substring(5, 7).c_str(), nullptr, 16);
 
-    // Configure brightness 
     R = (R * Brightness) / 255;
     G = (G * Brightness) / 255;
     B = (B * Brightness) / 255;
     int W = (newW * Brightness) / 255;
 
-    // Set LED to color passed in.
     switch ((L + 1) % 3) {
     case 1:
         switch (L + 1) {
@@ -1379,8 +1359,8 @@ void setLedChill(int L, String hex, int newW, int Brightness) {
     }
 }
 
+// LEGACY CODE: NEVER TOUCH EVER EVER EVER
 void setLed(int L, String hex, int newW, int Brightness) {
-    // hex to rgb
     int newR = (int)strtol(hex.substring(1, 3).c_str(), nullptr, 16);
     int newG = (int)strtol(hex.substring(3, 5).c_str(), nullptr, 16);
     int newB = (int)strtol(hex.substring(5, 7).c_str(), nullptr, 16);
@@ -1574,191 +1554,186 @@ void setLed(int L, String hex, int newW, int Brightness) {
         G = (newG * Brightness) / 255;
         B = (newB * Brightness) / 255;
         W = (newW * Brightness) / 255;
-        
 
         switch ((L + 1) % 3) {
-        case 1:
-            switch (L + 1) {
             case 1:
-                leds[0].r = R;
-                FastLED.show();
-                leds[0].g = G;
-                FastLED.show();
-                leds[0].b = B;
-                FastLED.show();
-                leds[1].g = W;
-                FastLED.show();
-                break;
-            case 4:
-                leds[4].r = R;
-                FastLED.show();
-                leds[4].g = G;
-                FastLED.show();
-                leds[4].b = B;
-                FastLED.show();
-                leds[5].g = W;
-                FastLED.show();
-                break;
-            case 7:
-                leds[8].r = R;
-                FastLED.show();
-                leds[8].g = G;
-                FastLED.show();
-                leds[8].b = B;
-                FastLED.show();
-                leds[9].g = W;
-                FastLED.show();
-                break;
-            case 10:
-                leds[12].r = R;
-                FastLED.show();
-                leds[12].g = G;
-                FastLED.show();
-                leds[12].b = B;
-                FastLED.show();
-                leds[13].g = W;
-                FastLED.show();
-                break;
-            case 13:
-                leds[16].r = R;
-                FastLED.show();
-                leds[16].g = G;
-                FastLED.show();
-                leds[16].b = B;
-                FastLED.show();
-                leds[17].g = W;
-                FastLED.show();
-                break;
-            case 16:
-                leds[20].r = R;
-                FastLED.show();
-                leds[20].g = G;
-                FastLED.show();
-                leds[20].b = B;
-                FastLED.show();
-                leds[21].g = W;
-                FastLED.show();
-                break;
-            }
-            break;
-        case 2:
-            switch (L + 1) {
+                switch (L + 1) {
+                    case 1:
+                        leds[0].r = R;
+                        FastLED.show();
+                        leds[0].g = G;
+                        FastLED.show();
+                        leds[0].b = B;
+                        FastLED.show();
+                        leds[1].g = W;
+                        FastLED.show();
+                        break;
+                    case 4:
+                        leds[4].r = R;
+                        FastLED.show();
+                        leds[4].g = G;
+                        FastLED.show();
+                        leds[4].b = B;
+                        FastLED.show();
+                        leds[5].g = W;
+                        FastLED.show();
+                        break;
+                    case 7:
+                        leds[8].r = R;
+                        FastLED.show();
+                        leds[8].g = G;
+                        FastLED.show();
+                        leds[8].b = B;
+                        FastLED.show();
+                        leds[9].g = W;
+                        FastLED.show();
+                        break;
+                    case 10:
+                        leds[12].r = R;
+                        FastLED.show();
+                        leds[12].g = G;
+                        FastLED.show();
+                        leds[12].b = B;
+                        FastLED.show();
+                        leds[13].g = W;
+                        FastLED.show();
+                        break;
+                    case 13:
+                        leds[16].r = R;
+                        FastLED.show();
+                        leds[16].g = G;
+                        FastLED.show();
+                        leds[16].b = B;
+                        FastLED.show();
+                        leds[17].g = W;
+                        FastLED.show();
+                        break;
+                    case 16:
+                        leds[20].r = R;
+                        FastLED.show();
+                        leds[20].g = G;
+                        FastLED.show();
+                        leds[20].b = B;
+                        FastLED.show();
+                        leds[21].g = W;
+                        FastLED.show();
+                        break;
+                    }
+                    break;
             case 2:
-                leds[1].r = G;
-                FastLED.show();
-                leds[1].b = R;
-                FastLED.show();
-                leds[2].r = W;
-                FastLED.show();
-                leds[2].g = B;
-                FastLED.show();
+                switch (L + 1) {
+                case 2:
+                    leds[1].r = G;
+                    FastLED.show();
+                    leds[1].b = R;
+                    FastLED.show();
+                    leds[2].r = W;
+                    FastLED.show();
+                    leds[2].g = B;
+                    FastLED.show();
+                    break;
+                case 5:
+                    leds[5].b = R;
+                    FastLED.show();
+                    leds[5].r = G;
+                    FastLED.show();
+                    leds[6].g = B;
+                    FastLED.show();
+                    leds[6].r = W;
+                    FastLED.show();
+                    break;
+                case 8:
+                    leds[9].r = G;
+                    FastLED.show();
+                    leds[9].b = R;
+                    FastLED.show();
+                    leds[10].r = W;
+                    FastLED.show();
+                    leds[10].g = B;
+                    FastLED.show();
+                    break;
+                case 11:
+                    leds[13].r = G;
+                    FastLED.show();
+                    leds[13].b = R;
+                    FastLED.show();
+                    leds[14].r = W;
+                    FastLED.show();
+                    leds[14].g = B;
+                    FastLED.show();
+                    break;
+                case 14:
+                    leds[17].b = R;
+                    FastLED.show();
+                    leds[17].r = G;
+                    FastLED.show();
+                    leds[18].g = B;
+                    FastLED.show();
+                    leds[18].r = W;
+                    FastLED.show();
+                    break;
+                }
                 break;
-            case 5:
-                leds[5].b = R;
-                FastLED.show();
-                leds[5].r = G;
-                FastLED.show();
-                leds[6].g = B;
-                FastLED.show();
-                leds[6].r = W;
-                FastLED.show();
+            case 0:
+                switch (L + 1) {
+                case 3:
+                    leds[3].r = B;
+                    FastLED.show();
+                    leds[3].g = R;
+                    FastLED.show();
+                    leds[3].b = W;
+                    FastLED.show();
+                    leds[2].b = G;
+                    FastLED.show();
+                    break;
+                case 6:
+                    leds[7].r = B;
+                    FastLED.show();
+                    leds[7].g = R;
+                    FastLED.show();
+                    leds[7].b = W;
+                    FastLED.show();
+                    leds[6].b = G;
+                    FastLED.show();
+                    break;
+                case 9:
+                    leds[11].g = R;
+                    FastLED.show();
+                    leds[10].b = G;
+                    FastLED.show();
+                    leds[11].r = B;
+                    FastLED.show();
+                    leds[11].b = W;
+                    FastLED.show();
+                    break;
+                case 12:
+                    leds[15].r = B;
+                    FastLED.show();
+                    leds[15].g = R;
+                    FastLED.show();
+                    leds[15].b = W;
+                    FastLED.show();
+                    leds[14].b = G;
+                    FastLED.show();
+                    break;
+                case 15:
+                    leds[19].r = B;
+                    FastLED.show();
+                    leds[19].g = R;
+                    FastLED.show();
+                    leds[19].b = W;
+                    FastLED.show();
+                    leds[18].b = G;
+                    FastLED.show();
+                    break;
+                }
                 break;
-            case 8:
-                leds[9].r = G;
-                FastLED.show();
-                leds[9].b = R;
-                FastLED.show();
-                leds[10].r = W;
-                FastLED.show();
-                leds[10].g = B;
-                FastLED.show();
-                break;
-            case 11:
-                leds[13].r = G;
-                FastLED.show();
-                leds[13].b = R;
-                FastLED.show();
-                leds[14].r = W;
-                FastLED.show();
-                leds[14].g = B;
-                FastLED.show();
-                break;
-            case 14:
-                leds[17].b = R;
-                FastLED.show();
-                leds[17].r = G;
-                FastLED.show();
-                leds[18].g = B;
-                FastLED.show();
-                leds[18].r = W;
-                FastLED.show();
-                break;
-            }
-            break;
-        case 0:
-            switch (L + 1) {
-            case 3:
-                leds[3].r = B;
-                FastLED.show();
-                leds[3].g = R;
-                FastLED.show();
-                leds[3].b = W;
-                FastLED.show();
-                leds[2].b = G;
-                FastLED.show();
-                break;
-            case 6:
-                leds[7].r = B;
-                FastLED.show();
-                leds[7].g = R;
-                FastLED.show();
-                leds[7].b = W;
-                FastLED.show();
-                leds[6].b = G;
-                FastLED.show();
-                break;
-            case 9:
-                leds[11].g = R;
-                FastLED.show();
-                leds[10].b = G;
-                FastLED.show();
-                leds[11].r = B;
-                FastLED.show();
-                leds[11].b = W;
-                FastLED.show();
-                break;
-            case 12:
-                leds[15].r = B;
-                FastLED.show();
-                leds[15].g = R;
-                FastLED.show();
-                leds[15].b = W;
-                FastLED.show();
-                leds[14].b = G;
-                FastLED.show();
-                break;
-            case 15:
-                leds[19].r = B;
-                FastLED.show();
-                leds[19].g = R;
-                FastLED.show();
-                leds[19].b = W;
-                FastLED.show();
-                leds[18].b = G;
-                FastLED.show();
-                break;
-            }
-            break;
         }
-}
-
-	
+     }
 }
 
 void ledSetup() {
 	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-
-    // Set master values to startup settings
 	shelfOn = startupShelfOn;
 	focal = startupFocal;
 	delayTime = startupdelayTime;
@@ -1770,6 +1745,7 @@ void ledSetup() {
 	}
 }
 
+// UNCOMMENT SERIAL.PRINTS IF YOU WISH TO DEBUG API ENDPOINTS BEING HIT
 void currentSettingPrint() {
 	if (!shelfOn) {
 		////Serial.println("Shelf is OFF");
@@ -1799,6 +1775,7 @@ void currentSettingPrint() {
     }
 }
 
+// UNCOMMENT SERIAL.PRINTLNS IF YOU ARE HAVING ISSUES CONNECTING TO THE NETWORK
 void handleWebServer() {
     WiFiClient client = server.available();
 
@@ -1810,10 +1787,8 @@ void handleWebServer() {
         bool isBody = false;
         int contentLength = 0;
         int bodyBytesRead = 0;
-
         unsigned long timeout = millis();
 
-        // read header
         while (client.connected() && millis() - timeout < 5000) {
             if (client.available()) {
                 timeout = millis();
@@ -1822,7 +1797,6 @@ void handleWebServer() {
 
                 if (c == '\n') {
                     if (currentLine.length() == 0) {
-                        // End of headers
                         isBody = true;
                         break; 
                     }
@@ -1836,7 +1810,6 @@ void handleWebServer() {
             }
         }
 
-        // extract Content-Length
         if (requestHeader.indexOf("Content-Length:") != -1) {
             int start = requestHeader.indexOf("Content-Length:") + 15;
             int end = requestHeader.indexOf("\r\n", start);
@@ -1847,7 +1820,6 @@ void handleWebServer() {
             ////Serial.println(contentLength);
         }
 
-        // read the body
         if (isBody && contentLength > 0) {
             //Serial.print("Reading body, expecting: ");
             //Serial.print(contentLength);
@@ -1877,7 +1849,6 @@ void handleWebServer() {
             ////Serial.println(requestBody);
         }
 
-        // Check if we got a complete body
         bool bodyComplete = (bodyBytesRead == contentLength);
 
         if (requestHeader.indexOf("POST /api/config") != -1) {
@@ -1981,7 +1952,6 @@ void handleWebServer() {
             client.print("Hello");
         }
 
-        // Close the connection
         client.stop();
         ////Serial.println("Client disconnected");
     }
@@ -1997,23 +1967,19 @@ void processJsonConfig(const String& jsonString) {
         return;
     }
 
-    // Update delayTime if present
     if (doc.containsKey("delayTime")) {
         delayTime = doc["delayTime"].as<int>();
     }
 
-    // Update effectNumber if present
     if (doc.containsKey("effectNumber")) {
 		if (effectNumber != doc["effectNumber"]) {
 			for (int i = 0; i < LIGHT_COUNT; i++) {
 				setLed(i, "#000000", 0, 0);
 			}
-            // TODO Restart loop() - Need to look up how
 		}
         effectNumber = doc["effectNumber"];
     }
 
-    // Update whiteValues if present
     if (doc.containsKey("whiteValues")) {
         JsonArray whiteArray = doc["whiteValues"].as<JsonArray>();
         int index = 0;
@@ -2024,7 +1990,6 @@ void processJsonConfig(const String& jsonString) {
         }
     }
 
-    // Update brightnessValues if present
     if (doc.containsKey("brightnessValues")) {
         JsonArray brightnessArray = doc["brightnessValues"].as<JsonArray>();
         int index = 0;
@@ -2035,7 +2000,6 @@ void processJsonConfig(const String& jsonString) {
         }
     }
 
-    // Update colors if present
     if (doc.containsKey("colors")) {
         JsonArray colorsArray = doc["colors"].as<JsonArray>();
         int index = 0;
@@ -2057,6 +2021,5 @@ void connectToWifi() {
 
 	//Serial.print("IP Address: ");
 	////Serial.println(WiFi.localIP());
-
 	server.begin();
 }
