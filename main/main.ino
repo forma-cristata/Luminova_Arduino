@@ -999,6 +999,7 @@ void ThePianoMan() {
 
 // 1 -> Christmas
 void Smolder() {
+	delayTime = delayTime / 4;
     if (focal == -1) {
         for (int xy = 0; xy < COLOR_COUNT; xy++) {
             int f = 0;
