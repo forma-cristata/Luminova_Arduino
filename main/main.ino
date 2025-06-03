@@ -812,112 +812,64 @@ void Decay() {
 }
 
 // 3 -> Funky
+// No Focal mode
 void FeelTheFunk() {
     int strobeCount1 = 12;
     int strobeCount2 = 12;
     int ledsPerGroup = 4;
+    delayTime = delayTime / 4;
 
-    if (focal == -1) {
-        for(int colorer = 0; colorer < COLOR_COUNT; colorer++) {
-            for (int strobe = 0; strobe < strobeCount1; strobe++) {
-                delay(delayTime * 12);
-
-                for (int i = 0; i < ledsPerGroup; i++) {
-                    if (effectNumber != 3) return;
-
-                    int ledIndex = random(0, LIGHT_COUNT);
-                    setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + colorer) % COLOR_COUNT], whiteValues[(ledIndex + colorer) % COLOR_COUNT], brightnessValues[(ledIndex + colorer) % COLOR_COUNT]);
-                    delay(delayTime);
-                }
-
-                delay(delayTime * 12);
-
-
-                for (int i = 0; i < ledsPerGroup; i++) {
-                    if (effectNumber != 3) return;
-                    int ledIndex = random(0, LIGHT_COUNT);
-                    setLed((ledIndex + 1)%LIGHT_COUNT, "#000000", 0, 0);
-                    delay(delayTime);
-
-                }
-            }
-
-
-            for (int strobe = 0; strobe < strobeCount2; strobe++) {
-                focalCheck(delayTime * 12);
-
-                for (int i = 0; i < ledsPerGroup; i++) {
-                    if (effectNumber != 3) return;
-                    int ledIndex = random(0, LIGHT_COUNT);
-                    setLed((ledIndex + 1) % LIGHT_COUNT, colors[(ledIndex + colorer) % COLOR_COUNT], whiteValues[(ledIndex + colorer) % COLOR_COUNT], brightnessValues[(ledIndex + colorer) % COLOR_COUNT]);
-                    delay(delayTime);
-
-                }
-
-                focalCheck(delayTime * 12);
-
-
-                for (int i = 0; i < ledsPerGroup; i++) {
-                    if (effectNumber != 3) return;
-                    int ledIndex = random(0, LIGHT_COUNT);
-                    setLed((ledIndex + 1) % LIGHT_COUNT, "#000000", 0, 0);
-                    delay(delayTime);
-
-                }
-            }
-        }
-        focalCheck(0);
-    }
-    else {
-        focalCheck(delayTime / 12);
-
-        for (int strobe = focal; strobe < strobeCount1; strobe++) {
+    for(int colorer = 0; colorer < COLOR_COUNT; colorer++) {
+        for (int strobe = 0; strobe < strobeCount1; strobe++) {
+            delay(delayTime * 12);
 
             for (int i = 0; i < ledsPerGroup; i++) {
                 if (effectNumber != 3) return;
 
-                int ledIndex = random(0, LIGHT_COUNT);
-                int ledIndex2 = random(0, LIGHT_COUNT);
-				setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+                int ledIndex = (random(0, LIGHT_COUNT) + 1) % LIGHT_COUNT;
+				int colorIndex = (ledIndex + colorer) % COLOR_COUNT;
+                setLed(ledIndex, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
+                delay(delayTime);
             }
 
+            focalCheck(delayTime * 12);
 
-            for (int i = focal; i < ledsPerGroup; i++) {
-                if (effectNumber != 3) return;
-
-                int ledIndex = random(0, LIGHT_COUNT);
-                int ledIndex2 = random(0, LIGHT_COUNT);
-                setLed(ledIndex + 1, "#000000", 0, 0);
-                setLed(ledIndex2 + 1, "#000000", 0, 0);
-            }
-        }
-
-        delay(delayTime / 12);
-
-
-        for (int strobe = focal + 1; strobe >= 0; strobe--) {
 
             for (int i = 0; i < ledsPerGroup; i++) {
                 if (effectNumber != 3) return;
+                int ledIndex = (random(0, LIGHT_COUNT) + 1) % LIGHT_COUNT;
+                setLed(ledIndex, "#000000", 0, 0);
+                delay(delayTime);
 
-                int ledIndex = random(0, LIGHT_COUNT);
-                int ledIndex2 = random(0, LIGHT_COUNT);
-                setLed(ledIndex + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
-                setLed(ledIndex2 + 1, colors[ledIndex % COLOR_COUNT], whiteValues[ledIndex % COLOR_COUNT], brightnessValues[ledIndex % COLOR_COUNT]);
+            }
+        }
+
+
+        for (int strobe = 0; strobe < strobeCount2; strobe++) {
+            focalCheck(delayTime * 12);
+
+            for (int i = 0; i < ledsPerGroup; i++) {
+                if (effectNumber != 3) return;
+                int ledIndex = (random(0, LIGHT_COUNT) + 1) % LIGHT_COUNT;
+				int colorIndex = (ledIndex + colorer) % COLOR_COUNT;
+                setLed(ledIndex, colors[colorIndex], whiteValues[colorIndex], brightnessValues[colorIndex]);
+                delay(delayTime);
+
             }
 
+            focalCheck(delayTime * 12);
 
-            for (int i = focal; i < ledsPerGroup; i++) {
+
+            for (int i = 0; i < ledsPerGroup; i++) {
                 if (effectNumber != 3) return;
+                int ledIndex = (random(0, LIGHT_COUNT) + 1) % LIGHT_COUNT;
+                setLed(ledIndex, "#000000", 0, 0);
+                delay(delayTime);
 
-                int ledIndex = random(0, LIGHT_COUNT);
-                int ledIndex2 = random(0, LIGHT_COUNT);
-                setLed(ledIndex + 1, "#000000", 0, 0);
-                setLed(ledIndex2 + 1, "#000000", 0, 0);
             }
         }
     }
+    focalCheck(0);
 }
 
 // 2 -> Comfort Song
