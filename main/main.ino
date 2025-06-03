@@ -1043,75 +1043,67 @@ void Smolder() {
     else {
         for (int xy = 0; xy < COLOR_COUNT; xy++) {
             int f = 0;
-
-            for (int j = focal; j < focal + LIGHT_COUNT; j += 2) {
+            int j2 = 15;
+            for (int j = 0; j < focal; j += 2) {
+                j = j % LIGHT_COUNT;
+				j2 = j2 % LIGHT_COUNT;
                 if (effectNumber != 1) return;
-
-                int currentLed = j % LIGHT_COUNT;
                 delay(delayTime / 16);
-
-                setLed(currentLed, colors[xy], whiteValues[xy], brightnessValues[xy]);
-
-                if (currentLed == 8) {
+                setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                if (j2 >= focal) {
+                    setLed(j2, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                }
+                
+                if (j == 8) {
                     f = (xy + 1) % COLOR_COUNT;
                     focalCheck(delayTime / 16);
-                    setLed(currentLed, colors[f], whiteValues[f], brightnessValues[f]);
+                    setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                    if (j2 >= focal) {
+                        setLed(j2, colors[f], whiteValues[f], brightnessValues[f]);
+                    }
                 }
 
-                if (currentLed == 12) {
+                if (j == 12) {
                     f = (xy + 2) % COLOR_COUNT;
                     delay(delayTime / 16);
-                    setLed(currentLed, colors[f], whiteValues[f], brightnessValues[f]);
+                    setLed(j, colors[f], whiteValues[f], brightnessValues[f]);
+                    if (j2 >= focal) {
+                        setLed(j2, colors[f], whiteValues[f], brightnessValues[f]);
+                    }
                 }
 
                 f = (xy + 3) % COLOR_COUNT;
                 int nextLed = (j + 1) % LIGHT_COUNT;
-                delay(delayTime / 16);
-
+                int nextLed2 = (j2 + 1) % LIGHT_COUNT;
+                delay(delayTime * 3);
                 setLed(nextLed, colors[f], whiteValues[f], brightnessValues[f]);
+                if (j2 >= focal) {
+                    setLed(nextLed2, colors[f], whiteValues[f], brightnessValues[f]);
+                }
+                j2--;
             }
 
-            for (int j = focal; j > focal - LIGHT_COUNT; j -= 2) {
+            j2 = 15;
+            for (int j = 0; j < focal; j += 2) {
+				j = j % LIGHT_COUNT;
+				j2 = j2 % LIGHT_COUNT;
                 if (effectNumber != 1) return;
-
-                int currentLed = (j + LIGHT_COUNT) % LIGHT_COUNT;
-                delay(delayTime / 16);
-
-                setLed(currentLed, colors[xy], whiteValues[xy], brightnessValues[xy]);
-
-                if (currentLed == 8) {
-                    f = (xy + 1) % COLOR_COUNT;
-                    delay(delayTime / 16);
-                    setLed(currentLed, colors[f], whiteValues[f], brightnessValues[f]);
+                focalCheck(delayTime * 3);
+                setLed(j, colors[xy], whiteValues[xy], brightnessValues[xy]);
+                if (j2 >= focal) {
+                    setLed(j2, colors[xy], whiteValues[xy], brightnessValues[xy]);
                 }
+                int f = (xy + 3) % COLOR_COUNT;
 
-                if (currentLed == 12) {
-                    f = (xy + 2) % COLOR_COUNT;
-                    delay(delayTime / 16);
-                    setLed(currentLed, colors[f], whiteValues[f], brightnessValues[f]);
+                int prevLed = (j - 1 + LIGHT_COUNT) % LIGHT_COUNT;
+                int prevLed2 = (j2 - 1 + LIGHT_COUNT) % LIGHT_COUNT;
+
+                setLed(prevLed, colors[f], whiteValues[f], brightnessValues[f]);
+                if (j2 >= focal) {
+                    setLed(prevLed2, colors[f], whiteValues[f], brightnessValues[f]);
                 }
-
-                f = (xy + 3) % COLOR_COUNT;
-                int nextLed = ((j + 1) + LIGHT_COUNT) % LIGHT_COUNT;
-                delay(delayTime / 16);
-
-                setLed(nextLed, colors[f], whiteValues[f], brightnessValues[f]);
-            }
-
-            for (int offset = 0; offset < LIGHT_COUNT; offset++) {
-                if (effectNumber != 1) return;
-
-                int forwardLed = (focal + offset) % LIGHT_COUNT;
-                if (offset % 2 == 0) {
-                    delay(delayTime / 16);
-
-                    setLed(forwardLed, colors[xy], whiteValues[xy], brightnessValues[xy]);
-                    f = (xy + 3) % COLOR_COUNT;
-                    int prevLed = (forwardLed - 1 + LIGHT_COUNT) % LIGHT_COUNT;
-                    delay(delayTime / 16);
-
-                    setLed(prevLed, colors[f], whiteValues[f], brightnessValues[f]);
-                }
+                delay(delayTime * 3);
+                j2--;
             }
         }
     }
