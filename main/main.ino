@@ -874,10 +874,16 @@ void FeelTheFunk() {
 
 // 2 -> Comfort Song
 void ThePianoMan() {
-    // Create pattern indices that can wrap around the LIGHT_COUNT
+	for (int i = 0; i < LIGHT_COUNT; i++) {
+		setLed(i, "#000000", 0, 0);
+	}
+
     int patternIndices[] = { 1, 2, 3, 2, 4, 3, 2, 1, 0, 1, 2, 1, 3, 2, 1, 0 };
+    int patternIndices2[] = { 14, 13, 12, 13, 11, 12, 13, 14, 15, 14, 13, 14, 12, 13, 14, 15 };
     int pattern2Indices[] = { 7, 8, 9, 8, 10, 9, 8, 7, 6, 7, 8, 7, 9, 8, 7, 6 };
-    int pattern3Indices[] = { 13, 14, 15, 14, 16, 15, 14, 13, 12, 13, 14, 13, 15, 14, 13, 12 };
+    int pattern2Indices2[] = { 8, 7, 6, 7, 5, 6, 7, 8, 9, 8, 7, 8, 6, 7, 8, 9 };
+    int pattern3Indices[] = { 13, 14, 15, 14, 15, 14, 13, 12, 11, 12, 13, 14, 15, 14, 13, 12 };
+    int pattern3Indices2[] = { 2, 1, 0, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3 };
 
     if (focal == -1) {
         for (int x = 0; x < COLOR_COUNT * 2; x++) {
@@ -895,46 +901,97 @@ void ThePianoMan() {
                 if (index1 < 0) index1 += LIGHT_COUNT;
                 if (index2 < 0) index2 += LIGHT_COUNT;
                 if (index3 < 0) index3 += LIGHT_COUNT;
+				x = x % LIGHT_COUNT;
 
-                setLed(index1, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
-                delay(delayTime * 4);
+                setLed(index1, colors[x], whiteValues[x], brightnessValues[x]);
+                delay(delayTime);
                 setLed(index1, "#000000", 0, 0);
 
-                setLed(index2, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
-                delay(delayTime * 4);
+                setLed(index2, colors[x], whiteValues[x], brightnessValues[x]);
+                delay(delayTime);
                 setLed(index2, "#000000", 0, 0);
 
-                setLed(index3, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
-                focalCheck(delayTime * 4);
+                setLed(index3, colors[x], whiteValues[x], brightnessValues[x]);
+                focalCheck(delayTime);
                 setLed(index3, "#000000", 0, 0);
 
             }
         }
     }
     else {
-        // Create a new pattern for focal-based operation that wraps properly
         for (int x = 0; x < COLOR_COUNT * 2; x++) {
-            for (int i = 0; i < delayTime / 2; i++) {
+            focalCheck(0);
+
+            for (int i = 0; i < 2; i++) {
                 if (effectNumber != 2) return;
 
-                int offset = x % 8; 
+                int index1 = patternIndices[x % LIGHT_COUNT] % LIGHT_COUNT;
+                int index12 = patternIndices2[x % LIGHT_COUNT] % LIGHT_COUNT;
 
-                int led1 = (focal + offset) % LIGHT_COUNT;
-                int led2 = (focal - offset + LIGHT_COUNT) % LIGHT_COUNT;
-                int led3 = (focal + offset + LIGHT_COUNT / 2) % LIGHT_COUNT;
-                int led4 = (focal - offset + LIGHT_COUNT / 2 + LIGHT_COUNT) % LIGHT_COUNT;
+                int index2 = pattern2Indices[x % LIGHT_COUNT] % LIGHT_COUNT;
+                int index22 = pattern2Indices2[x % LIGHT_COUNT] % LIGHT_COUNT;
 
-                setLed(led1, colors[x % LIGHT_COUNT], whiteValues[x % LIGHT_COUNT], brightnessValues[x % LIGHT_COUNT]);
-                setLed(led2, colors[(x + 2) % LIGHT_COUNT], whiteValues[(x + 2) % LIGHT_COUNT], brightnessValues[(x + 2) % LIGHT_COUNT]);
-                setLed(led3, colors[(x + 4) % LIGHT_COUNT], whiteValues[(x + 4) % LIGHT_COUNT], brightnessValues[(x + 4) % LIGHT_COUNT]);
-                setLed(led4, colors[(x + 6) % LIGHT_COUNT], whiteValues[(x + 6) % LIGHT_COUNT], brightnessValues[(x + 6) % LIGHT_COUNT]);
+                int index3 = pattern3Indices[x % LIGHT_COUNT] % LIGHT_COUNT;
+                int index32 = pattern3Indices2[x % LIGHT_COUNT] % LIGHT_COUNT;
 
-                setLed(led1, "#000000", 0, 0);
-                setLed(led2, "#000000", 0, 0);
-                setLed(led3, "#000000", 0, 0);
-                setLed(led4, "#000000", 0, 0);
+                if (index1 < 0) index1 += LIGHT_COUNT;
+                if (index12 < 0) index12 += LIGHT_COUNT;
 
-                focalCheck(2);
+                if (index2 < 0) index2 += LIGHT_COUNT;
+                if (index22 < 0) index22 += LIGHT_COUNT;
+
+                if (index3 < 0) index3 += LIGHT_COUNT;
+                if (index32 < 0) index32 += LIGHT_COUNT;
+
+                x = x % LIGHT_COUNT;
+
+                if (index1 < focal) {
+                    setLed(index1, colors[x], whiteValues[x], brightnessValues[x]);
+                }
+                if (index12 >= focal) {
+                    setLed(index12, colors[x], whiteValues[x], brightnessValues[x]);
+                }
+                
+                delay(delayTime);
+
+                if (index1 < focal) {
+                    setLed(index1, "#000000", 0, 0);
+                }
+                if (index12 >= focal) {
+                    setLed(index12, "#000000", 0, 0);
+                }
+
+                if (index2 < focal) {
+                    setLed(index2, colors[x], whiteValues[x], brightnessValues[x]);
+                }
+                if (index22 >= focal) {
+                    setLed(index22, colors[x], whiteValues[x], brightnessValues[x]);
+                }
+
+                delay(delayTime);
+
+                if (index2 < focal) {
+                    setLed(index2, "#000000", 0, 0);
+                }
+                if (index22 >= focal) {
+                    setLed(index22, "#000000", 0, 0);
+                }
+
+                if (index3 < focal) {
+                    setLed(index3, colors[x], whiteValues[x], brightnessValues[x]);
+                }
+                if (index32 >= focal) {
+                    setLed(index32, colors[x], whiteValues[x], brightnessValues[x]);
+                }
+
+                focalCheck(delayTime);
+
+                if (index3 < focal) {
+                    setLed(index3, "#000000", 0, 0);
+                }
+                if (index32 >= focal) {
+                    setLed(index32, "#000000", 0, 0);
+                }
             }
         }
     }
